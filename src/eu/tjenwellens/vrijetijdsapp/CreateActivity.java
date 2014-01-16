@@ -50,14 +50,14 @@ public class CreateActivity extends Activity {
         txtTijdMin = (EditText) findViewById(R.id.txtTijdMin);
         txtTijdMax = (EditText) findViewById(R.id.txtTijdMax);
         txtTags = (EditText) findViewById(R.id.txtTags);
-//        // rbtn
-//        rbtnPlaatsBinnen = (RadioButton) findViewById(R.id.rbtnPlaatsBinnen);
-//        rbtnPlaatsBuiten = (RadioButton) findViewById(R.id.rbtnPlaatsBuiten);
-//        rbtnEnergieRustig = (RadioButton) findViewById(R.id.rbtnEnergieRustig);
-//        rbtnEnergieActief = (RadioButton) findViewById(R.id.rbtnEnergieActief);
-//        // btn
-//        btnCancel = (Button) findViewById(R.id.btnCancel);
-//        btnCreate = (Button) findViewById(R.id.btnCreate);
+        //        // rbtn
+        //        rbtnPlaatsBinnen = (RadioButton) findViewById(R.id.rbtnPlaatsBinnen);
+        //        rbtnPlaatsBuiten = (RadioButton) findViewById(R.id.rbtnPlaatsBuiten);
+        //        rbtnEnergieRustig = (RadioButton) findViewById(R.id.rbtnEnergieRustig);
+        //        rbtnEnergieActief = (RadioButton) findViewById(R.id.rbtnEnergieActief);
+        //        // btn
+        //        btnCancel = (Button) findViewById(R.id.btnCancel);
+        //        btnCreate = (Button) findViewById(R.id.btnCreate);
         // radiogroup
         rgPlaats = (RadioGroup) findViewById(R.id.rgPlaats);
         rgEnergie = (RadioGroup) findViewById(R.id.rgEnergie);

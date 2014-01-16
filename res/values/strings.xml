@@ -23,5 +23,9 @@
     <string name="create_btn_actief">Actief</string>
     <string name="create_btn_cancel">Cancel</string>
     <string name="create_btn_create">Create</string>
+    
+    <!-- menu -->
+    <string name="menu_settings">Instellingen</string>
+    <string name="menu_create">Niew maken</string>
 	
 </resources>
