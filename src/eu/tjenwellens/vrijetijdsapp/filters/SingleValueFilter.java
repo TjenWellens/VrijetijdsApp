@@ -14,13 +14,17 @@ public class SingleValueFilter extends AbstactFilter {
         this.value = value;
     }
 
-    public boolean match(String value) {
-        return this.value.equalsIgnoreCase(value);
+    public static SingleValueFilter fromValue(String name, String value) {
+        return new SingleValueFilter(name, value);
     }
 
-    @Override
-    public String toString() {
-        return value;
+    private SingleValueFilter(Parcel in) {
+        super(in);
+        this.value = in.readString();
+    }
+
+    public boolean match(String value) {
+        return this.value.equalsIgnoreCase(value);
     }
 
     @Override
@@ -38,8 +42,11 @@ public class SingleValueFilter extends AbstactFilter {
         }
     };
 
-    private SingleValueFilter(Parcel in) {
-        super(in);
-        this.value = in.readString();
+    public String getValue() {
+        return value;
+    }
+
+    public FilterType getType() {
+        return FilterType.SINGLE_VALUE;
     }
 }

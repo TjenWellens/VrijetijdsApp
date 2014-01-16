@@ -51,4 +51,9 @@ public abstract class AbstactFilter implements Filter {
     protected AbstactFilter(Parcel in) {
         this.name = in.readString();
     }
+
+    @Override
+    public String toString() {
+        return getValue();
+    }
 }

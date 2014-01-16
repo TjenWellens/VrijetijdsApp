@@ -7,6 +7,7 @@ import android.os.Parcel;
  * @author Tjen
  */
 public class MinMaxFilter extends AbstactFilter {
+    private static final String SPLITTER = "-";
     private int min;
     private int max;
 
@@ -14,6 +15,19 @@ public class MinMaxFilter extends AbstactFilter {
         super(name);
         this.min = min;
         this.max = max;
+    }
+
+    public static MinMaxFilter fromValue(String name, String value) {
+        String[] values = value.split(SPLITTER);
+        int min = Integer.parseInt(values[0]);
+        int max = Integer.parseInt(values[1]);
+        return new MinMaxFilter(name, min, max);
+    }
+
+    private MinMaxFilter(Parcel in) {
+        super(in);
+        this.min = in.readInt();
+        this.max = in.readInt();
     }
 
     @Override
@@ -34,11 +48,6 @@ public class MinMaxFilter extends AbstactFilter {
     }
 
     @Override
-    public String toString() {
-        return "" + min + "-" + max;
-    }
-
-    @Override
     public void writeToParcel(Parcel out, int flags) {
         super.writeToParcel(out, flags);
         out.writeInt(min);
@@ -54,9 +63,11 @@ public class MinMaxFilter extends AbstactFilter {
         }
     };
 
-    private MinMaxFilter(Parcel in) {
-        super(in);
-        this.min = in.readInt();
-        this.max = in.readInt();
+    public String getValue() {
+        return min + SPLITTER + max;
+    }
+
+    public FilterType getType() {
+        return FilterType.MIN_MAX;
     }
 }
