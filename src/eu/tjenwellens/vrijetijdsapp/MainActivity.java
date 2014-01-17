@@ -3,20 +3,19 @@ package eu.tjenwellens.vrijetijdsapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
-import eu.tjenwellens.vrijetijdsapp.filters.Filter;
-import java.util.LinkedList;
 import java.util.List;
 
 public class MainActivity extends Activity {
     public static final int CODE_CREATE_ACTIVITY = 1;
+    public static final int CODE_SEARCH_ACTIVITY = 1;
     private TextView lblMain;
     private List<Activiteit> activiteiten;
+    ApplicationVrijetijdsApp application;
 
     /**
      * Called when the activity is first created.
@@ -24,6 +23,7 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        application = (ApplicationVrijetijdsApp) getApplication();
         initGUI();
         loadActiviteiten();
     }
@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
     }
 
     private void loadActiviteiten() {
-        activiteiten = DatabaseHandler.getInstance(this).getAllActiviteiten();
+        activiteiten = application.getData().getAllActiviteiten();
         updateGUI();
     }
 
@@ -64,7 +64,6 @@ public class MainActivity extends Activity {
     private void addActiviteit(Activiteit a) {
         activiteiten.add(a);
         updateGUI();
-        DatabaseHandler.getInstance(this).addActiviteit(a);
         Toast.makeText(this, "Activeit " + a.getName() + " added", Toast.LENGTH_SHORT).show();
     }
 
@@ -73,19 +72,7 @@ public class MainActivity extends Activity {
         if (name == null) {
             return null;
         }
-        String description = intent.getStringExtra("activiteit_description");
-        description = description == null ? "" : description;
-        String manual = intent.getStringExtra("activiteit_manual");
-        manual = manual == null ? "" : manual;
-        List<Filter> filters = new LinkedList<Filter>();
-        Parcelable[] parcArr = (Parcelable[]) intent.getParcelableArrayExtra("activiteit_filters");
-        if (parcArr != null) {
-            for (int i = 0; i < parcArr.length; i++) {
-                Parcelable parcelable = parcArr[i];
-                filters.add((Filter) parcelable);
-            }
-        }
-        return new Activiteit(name, description, manual, filters);
+        return ((ApplicationVrijetijdsApp) getApplication()).getData().getActiviteit(name);
     }
 
     private void startCreateActivity() {
