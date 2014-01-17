@@ -13,7 +13,7 @@ public enum PropertyType {
     }
 
     public static Property createLocationProperty(String location) {
-        return new SingleValueProperty(ENERGY, location);
+        return new SingleValueProperty(LOCATION, location);
     }
 
     public static Property createPeopleProperty(int min, int max) {

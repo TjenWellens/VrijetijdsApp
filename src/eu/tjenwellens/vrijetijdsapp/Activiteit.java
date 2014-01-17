@@ -8,7 +8,7 @@ import java.util.Map;
  *
  * @author Tjen
  */
-public interface Activiteit {
+public interface Activiteit extends Comparable<Activiteit> {
     String getName();
 
     String getDescription();

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import eu.tjenwellens.vrijetijdsapp.Activiteit;
 import eu.tjenwellens.vrijetijdsapp.properties.*;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashSet;
@@ -18,8 +19,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 class DatabaseHandler extends SQLiteOpenHelper {
+    private boolean newDatabase = false;
     // Database Version
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 9;
     // Database Name
     private static final String DATABASE_NAME = "vrijetijdsapp";
     private static final String TABLE_ACTIVITEITEN = "activiteiten";
@@ -36,9 +38,52 @@ class DatabaseHandler extends SQLiteOpenHelper {
     // Create tables
     private static final String CREATE_ACTIVITEITEN_TABLE = "CREATE TABLE " + TABLE_ACTIVITEITEN + "("
             + KEY_ACTIVITEIT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + KEY_ACTIVITEIT_NAME + " TEXT,"
+            + KEY_ACTIVITEIT_NAME + " TEXT UNIQUE,"
             + KEY_ACTIVITEIT_DESCRIPTION + " TEXT,"
             + KEY_ACTIVITEIT_MANUAL + " TEXT)";
+
+    private void createDebugEntries(SQLiteDatabase db) {
+        List<Activiteit> acts = new LinkedList<Activiteit>();
+        linkActProp(acts, "Actief", PropertyType.createEnergyProperty("actief"));
+        linkActProp(acts, "Rustig", PropertyType.createEnergyProperty("rustig"));
+
+        linkActProp(acts, "Binnen", PropertyType.createLocationProperty("binnen"));
+        linkActProp(acts, "Buiten", PropertyType.createLocationProperty("buiten"));
+
+        linkActProp(acts, "Price 5-10", PropertyType.createPriceProperty(5, 10));
+        linkActProp(acts, "Price 10-100", PropertyType.createPriceProperty(10, 100));
+        linkActProp(acts, "Price 0-50", PropertyType.createPriceProperty(0, 50));
+
+        linkActProp(acts, "People 5-10", PropertyType.createPeopleProperty(5, 10));
+        linkActProp(acts, "People 10-100", PropertyType.createPeopleProperty(10, 100));
+        linkActProp(acts, "People 0-50", PropertyType.createPeopleProperty(0, 50));
+
+        linkActProp(acts, "Time 5-10", PropertyType.createTimeProperty(5, 10));
+        linkActProp(acts, "Time 10-100", PropertyType.createTimeProperty(10, 100));
+        linkActProp(acts, "Time 0-50", PropertyType.createTimeProperty(0, 50));
+
+        linkActProp(acts, "Rating -10", PropertyType.createRatingProperty(-10));
+        linkActProp(acts, "Rating -5", PropertyType.createRatingProperty(-5));
+        linkActProp(acts, "Rating 5", PropertyType.createRatingProperty(5));
+        linkActProp(acts, "Rating 10", PropertyType.createRatingProperty(10));
+
+        Set<String> tags = new HashSet<String>();
+        tags.add("a");
+        linkActProp(acts, "Tags a", PropertyType.createTagsProperty(tags));
+        tags.add("b");
+        linkActProp(acts, "Tags a,b", PropertyType.createTagsProperty(tags));
+        tags.add("c");
+        linkActProp(acts, "Tags a,b,c", PropertyType.createTagsProperty(tags));
+        for (Activiteit activiteit : acts) {
+            addActiveit(db, activiteit);
+        }
+    }
+
+    private void linkActProp(List<Activiteit> acts, String name, Property prop) {
+        Collection<Property> ps = new LinkedList<Property>();
+        ps.add(prop);
+        acts.add(new DatabaseActiviteit(name, null, null, ps));
+    }
 
     private void createPropertyTable(SQLiteDatabase db, PropertyType type) {
         Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, "DB create table: " + PROPERTY_TABLES.get(type));
@@ -92,6 +137,14 @@ class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        if (newDatabase) {
+            createDebugEntries(db);
+        }
+    }
+
     private void logTables(SQLiteDatabase db) {
         Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
         if (c.moveToFirst()) {
@@ -110,6 +163,7 @@ class DatabaseHandler extends SQLiteOpenHelper {
     // Upgrading database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        newDatabase = true;
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACTIVITEITEN);
         for (String table : PROPERTY_TABLES.values()) {
@@ -131,7 +185,7 @@ class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    public Set<Long> addActiviteiten(Collection<Activiteit> activiteiten) {
+    public Set<Long> addAllActiviteiten(Collection<Activiteit> activiteiten) {
         SQLiteDatabase db = null;
         Set<Long> ids = new HashSet<Long>();
         try {
@@ -184,18 +238,17 @@ class DatabaseHandler extends SQLiteOpenHelper {
 //        values.put(KEY_PROPERTY_TYPE, type.name());
         switch (type) {
             case ENERGY:
-                break;
             case LOCATION:
-            case TIME:
                 values.put(KEY_PROPERTY_VALUE, ((SingleValueProperty) property).getValue());
                 break;
+            case TIME:
             case PEOPLE:
             case PRICE:
                 values.put(KEY_PROPERTY_MIN, ((MinMaxProperty) property).getMin());
                 values.put(KEY_PROPERTY_MAX, ((MinMaxProperty) property).getMax());
                 break;
             case RATING:
-                values.put(KEY_PROPERTY_RATING, ((MinMaxProperty) property).getMin());
+                values.put(KEY_PROPERTY_RATING, ((RatingProperty) property).getRating());
                 break;
             case TAGS:
                 for (String value : ((MultiValueProperty) property).getValues()) {
@@ -237,7 +290,6 @@ class DatabaseHandler extends SQLiteOpenHelper {
                 String manual = cursor.getString(3);
                 List<Property> properties = getProperties(db, id);
                 // add
-                //TODO
                 activiteiten.add(new DatabaseActiviteit(name, description, manual, properties));
             } while (cursor.moveToNext());
         }
@@ -252,27 +304,27 @@ class DatabaseHandler extends SQLiteOpenHelper {
 //            long id = cursor.getLong(0);
             switch (type) {
                 case ENERGY:
-                    property = PropertyType.createEnergyProperty(cursor.getString(1));
+                    property = PropertyType.createEnergyProperty(cursor.getString(cursor.getColumnIndex(KEY_PROPERTY_VALUE)));
                     break;
                 case LOCATION:
-                    property = PropertyType.createLocationProperty(cursor.getString(1));
+                    property = PropertyType.createLocationProperty(cursor.getString(cursor.getColumnIndex(KEY_PROPERTY_VALUE)));
                     break;
                 case TIME:
-                    property = PropertyType.createTimeProperty(cursor.getInt(1), cursor.getInt(2));
+                    property = PropertyType.createTimeProperty(cursor.getInt(cursor.getColumnIndex(KEY_PROPERTY_MIN)), cursor.getInt(cursor.getColumnIndex(KEY_PROPERTY_MAX)));
                     break;
                 case PEOPLE:
-                    property = PropertyType.createPeopleProperty(cursor.getInt(1), cursor.getInt(2));
+                    property = PropertyType.createPeopleProperty(cursor.getInt(cursor.getColumnIndex(KEY_PROPERTY_MIN)), cursor.getInt(cursor.getColumnIndex(KEY_PROPERTY_MAX)));
                     break;
                 case PRICE:
-                    property = PropertyType.createPriceProperty(cursor.getInt(1), cursor.getInt(2));
+                    property = PropertyType.createPriceProperty(cursor.getInt(cursor.getColumnIndex(KEY_PROPERTY_MIN)), cursor.getInt(cursor.getColumnIndex(KEY_PROPERTY_MAX)));
                     break;
                 case RATING:
-                    property = PropertyType.createRatingProperty(cursor.getInt(1));
+                    property = PropertyType.createRatingProperty(cursor.getInt(cursor.getColumnIndex(KEY_PROPERTY_RATING)));
                     break;
                 case TAGS:
                     LinkedList<String> values = new LinkedList<String>();
                     do {
-                        values.add(cursor.getString(1));
+                        values.add(cursor.getString(cursor.getColumnIndex(KEY_PROPERTY_VALUE)));
                     } while (cursor.moveToNext());
                     property = PropertyType.createTagsProperty(values);
                     break;
@@ -318,6 +370,137 @@ class DatabaseHandler extends SQLiteOpenHelper {
         String manual = cursor.getString(3);
         cursor.close();
         return new DatabaseActiviteit(name, description, manual, getProperties(db, id));
+    }
+    private static final String AND = " AND ";
+    private static final String OR = " OR ";
+    private static final String NOT = " NOT ";
+
+    public Set<Activiteit> filterActiviteiten(Set<Filter> filters) {
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+            return getActiviteitenById(db, filterPropertiesIds(db, filters));
+        } finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+    }
+
+    private Set<Activiteit> getActiviteitenById(SQLiteDatabase db, Set<Long> ids) {
+        Set<Activiteit> activiteiten = new HashSet<Activiteit>();
+        for (Long id : ids) {
+            activiteiten.add(getActiviteitById(db, id));
+        }
+        return activiteiten;
+    }
+
+    private Activiteit getActiviteitById(SQLiteDatabase db, Long id) {
+        Cursor cursor = db.query(TABLE_ACTIVITEITEN, null, KEY_ACTIVITEIT_ID + " = " + id, null, null, null, null);
+        if (!cursor.moveToFirst()) {
+            return null;
+        }
+//        long id = cursor.getLong(0);
+        String name = cursor.getString(1);
+        String description = cursor.getString(2);
+        String manual = cursor.getString(3);
+        cursor.close();
+        return new DatabaseActiviteit(name, description, manual, getProperties(db, id));
+    }
+
+    private Set<Long> filterPropertiesIds(SQLiteDatabase db, Set<Filter> filters) {
+        Set<Long> ids = getAllIds(db);
+        for (Filter filter : filters) {
+            ids.removeAll(filterPropertyIds(db, filter, true));
+        }
+        return ids;
+    }
+
+    private Set<Long> getAllIds(SQLiteDatabase db) {
+        Set<Long> ids = new HashSet<Long>();
+        Cursor c = db.query(TABLE_ACTIVITEITEN, new String[]{KEY_ACTIVITEIT_ID}, null, null, null, null, null);
+        if (c.moveToFirst()) {
+            do {
+                ids.add(c.getLong(0));
+            } while (c.moveToNext());
+        }
+        c.close();
+        return ids;
+    }
+
+    private Set<Long> filterPropertyIds(SQLiteDatabase db, Filter filter, boolean reverse) {
+        Set<Long> ids = new HashSet<Long>();
+        StringBuilder selection = new StringBuilder();
+        if (reverse) {
+            selection.append(NOT);
+        }
+        selection.append('(');
+        String[] selectionArgs = null;
+        switch (filter.getType()) {
+            case ENERGY:
+                String energy = filter.getValue();
+                selection.append(KEY_PROPERTY_VALUE).append(" = ?");
+                selectionArgs = new String[]{energy};
+                break;
+            case LOCATION:
+                String location = filter.getValue();
+                selection.append(KEY_PROPERTY_VALUE).append(" = ?");
+                selectionArgs = new String[]{location};
+                break;
+            case TIME:
+                int time = Integer.parseInt(filter.getValue());
+                selection.append(KEY_PROPERTY_MIN).append(" < ").append(time).append(AND).append(time).append(" < ").append(KEY_PROPERTY_MAX);
+                break;
+            case PEOPLE:
+                int ppl = Integer.parseInt(filter.getValue());
+                selection.append(KEY_PROPERTY_MIN).append(" < ").append(ppl).append(AND).append(ppl).append(" < ").append(KEY_PROPERTY_MAX);
+                break;
+            case PRICE:
+                int price = Integer.parseInt(filter.getValue());
+                selection.append(KEY_PROPERTY_MIN).append(" < ").append(price);
+//                // price > min
+//                selection.append(AND).append(price).append(" < ").append(KEY_PROPERTY_MAX);
+                break;
+            case RATING:
+                int rating = Integer.parseInt(filter.getValue());
+                selection.append(KEY_PROPERTY_RATING).append(" >= ").append(rating);
+                break;
+            case TAGS:
+                // TODO: tags werken niet tegoei, zit het probleem hier?
+                /*
+                 * act: a
+                 * act: a|b
+                 * act: a|b|c
+                 * search a -> a            correct
+                 * search b -> null         instead of 2
+                 * search c -> null         instead of 1
+                 * search a,b -> 2: a a,b   instead of 3
+                 * search a,b,b -> 3        instead of 3
+                 */
+                String tags = filter.getValue();
+                selectionArgs = tags.split(Filter.SPLITTER);
+                boolean first = true;
+                for (String tag : Arrays.asList(selectionArgs)) {
+                    if (first) {
+                        first = false;
+                    } else {
+                        selection.append(OR);
+                    }
+                    selection.append(KEY_PROPERTY_VALUE).append(" = ?");
+                }
+                break;
+            default:
+                throw new PropertyTypeUnknowmException(filter.getType());
+        }
+        selection.append(')');
+        Cursor c = db.query(PROPERTY_TABLES.get(filter.getType()), new String[]{KEY_ACTIVITEIT_ID}, selection.toString(), selectionArgs, null, null, null);
+        if (c.moveToFirst()) {
+            do {
+                ids.add(c.getLong(0));
+            } while (c.moveToNext());
+        }
+        c.close();
+        return ids;
     }
 //    // Updating single contact
 //    public int updateActiviteit(ActiviteitI activiteit) {

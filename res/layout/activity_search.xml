@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical" >
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/lblPersonen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_lbl_personen" />
+
+
+            <EditText
+                android:id="@+id/txtPersonen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/lblPlaats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_lbl_plaats" />
+
+            <RadioGroup
+                android:id="@+id/rgPlaats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/rbtnPlaatsBinnen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_btn_binnen" />
+
+                <RadioButton
+                    android:id="@+id/rbtnPlaatsBuiten"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_btn_buiten" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lblEnergie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_lbl_energie" />
+
+            <RadioGroup
+                android:id="@+id/rgEnergie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/rbtnEnergieRustig"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_btn_rustig" />
+
+                <RadioButton
+                    android:id="@+id/rbtnEnergieActief"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_btn_actief" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/lblPrijs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_lbl_prijs" />
+
+
+            <EditText
+                android:id="@+id/txtPrijs"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/lblTijd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_lbl_tijd" />
+
+
+            <EditText
+                android:id="@+id/txtTijd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/lblTags"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/search_lbl_tags" />
+
+            <EditText
+                android:id="@+id/txtTags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/search_hint_tags" />
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="btnCancel"
+            android:text="@string/search_btn_cancel" />
+
+        <Button
+            android:id="@+id/btnSearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="btnSearch"
+            android:text="@string/search_btn_search" />
+    </LinearLayout>
+
+</LinearLayout>

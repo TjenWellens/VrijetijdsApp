@@ -1,6 +1,7 @@
 package eu.tjenwellens.vrijetijdsapp.storage;
 
 import eu.tjenwellens.vrijetijdsapp.Activiteit;
+import eu.tjenwellens.vrijetijdsapp.properties.Filter;
 import eu.tjenwellens.vrijetijdsapp.properties.Property;
 import java.util.List;
 import java.util.Set;
@@ -14,5 +15,9 @@ public interface StorageStrategy {
 
     Activiteit getActiviteit(String name);
 
-    public List<Activiteit> getAllActiviteiten();
+    List<Activiteit> getAllActiviteiten();
+
+    List<Activiteit> getLatestSelection();
+
+    List<Activiteit> filterActiviteiten(Set<Filter> filters);
 }

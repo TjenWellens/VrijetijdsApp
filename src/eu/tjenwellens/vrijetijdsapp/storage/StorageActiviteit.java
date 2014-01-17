@@ -47,6 +47,10 @@ public abstract class StorageActiviteit implements Activiteit {
 
     @Override
     public String toString() {
-        return "Activiteit{" + "name=" + name + ", description=" + description + ", manual=" + manual + ", properties(" + properties.size() + ")=" + properties + '}';
+        return name + ", " + description + ", " + manual + ", " + properties;
+    }
+
+    public int compareTo(Activiteit comp) {
+        return name.compareTo(comp.getName());
     }
 }

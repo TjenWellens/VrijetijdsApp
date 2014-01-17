@@ -18,14 +18,39 @@
     <string name="create_lbl_tags">Tags</string>
     <string name="create_lbl_energie">Energie</string>
     <string name="create_btn_binnen">Binnen</string>
-    <string name="create_btn_buiten">buiten</string>
+    <string name="create_btn_buiten">Buiten</string>
     <string name="create_btn_rustig">Rustig</string>
     <string name="create_btn_actief">Actief</string>
-    <string name="create_btn_cancel">Cancel</string>
-    <string name="create_btn_create">Create</string>
+    <string name="create_btn_cancel">Annuleer</string>
+    <string name="create_btn_create">Maak</string>
     
+    <!-- activity search --> 
+    <string name="search_hint_tags">tag1, tag2, &#8230;</string>
+    <string name="search_lbl_personen">Aantal personen</string>
+    <string name="search_lbl_plaats">Plaats</string>
+    <string name="search_lbl_prijs">Prijs</string>
+    <string name="search_lbl_tijd">Tijdsduur</string>
+    <string name="search_lbl_tags">Tags</string>
+    <string name="search_lbl_energie">Energie</string>
+    <string name="search_btn_binnen">Binnen</string>
+    <string name="search_btn_buiten">Buiten</string>
+    <string name="search_btn_rustig">Rustig</string>
+    <string name="search_btn_actief">Actief</string>
+    <string name="search_btn_cancel">Annuleer</string>
+    <string name="search_btn_search">Zoek</string>
+
     <!-- menu -->
     <string name="menu_settings">Instellingen</string>
     <string name="menu_create">Niew maken</string>
+    <string name="menu_search">Zoeken</string>
+    <string name="menu_show_all">Toon alle</string>
+    
+    <!-- toast messages -->
+    <string name="toast_create_fail">Het maken van de activiteit is mislukt. Is de naam uniek?</string>
+    <string name="toast_create_nameless">Je moet een naam opgeven.</string>
+    <string name="toast_create_success">Activiteit aangemaakt!</string>
+    <string name="toast_create_cancel">Maken geannuleerd</string>
+    <string name="toast_search_success">Zoeken is gelukt!</string>
+    <string name="toast_search_cancel">Zoeken is geannuleerd.</string>
 	
 </resources>

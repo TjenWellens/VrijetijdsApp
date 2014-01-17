@@ -18,6 +18,6 @@ public class SingleValueProperty extends GeneralProperty {
 
     @Override
     public String toString() {
-        return "SingleValueProperty{" + super.getType().toString() + ",value=" + value + '}';
+        return value;
     }
 }

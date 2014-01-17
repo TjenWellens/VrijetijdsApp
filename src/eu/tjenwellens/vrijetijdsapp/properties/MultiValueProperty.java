@@ -23,7 +23,7 @@ public class MultiValueProperty extends GeneralProperty {
 
     @Override
     public String toString() {
-        StringBuilder s = new StringBuilder("MultiValueProperty{" + super.getType().toString() + ",values=");
+        StringBuilder s = new StringBuilder();
         boolean first = true;
         for (String value : values) {
             if (first) {
@@ -33,7 +33,6 @@ public class MultiValueProperty extends GeneralProperty {
             }
             s.append(value);
         }
-        s.append('}');
         return s.toString();
     }
 }

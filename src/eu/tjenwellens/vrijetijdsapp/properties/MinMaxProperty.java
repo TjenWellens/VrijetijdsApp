@@ -21,4 +21,9 @@ public class MinMaxProperty extends GeneralProperty {
     public int getMax() {
         return max;
     }
+
+    @Override
+    public String toString() {
+        return min + "-" + max;
+    }
 }

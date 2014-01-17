@@ -67,13 +67,13 @@ public class CreateActivity extends Activity {
         description = txtDescription.getText().toString().trim();
         manual = txtManual.getText().toString().trim();
         if (name.isEmpty()) {
-            Toast.makeText(this, "You must fill in a name.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.toast_create_nameless, Toast.LENGTH_SHORT).show();
             return null;
         }
         // Personen
         String minPers = txtPersonenMin.getText().toString().trim();
         String maxPers = txtPersonenMax.getText().toString().trim();
-        if (!minPers.isEmpty() || !minPers.isEmpty()) {
+        if (!minPers.isEmpty() || !maxPers.isEmpty()) {
             int persMin = minPers.isEmpty() ? -1 : Integer.parseInt(minPers);
             int persMax = maxPers.isEmpty() ? 1000 : Integer.parseInt(maxPers);
             properties.add(PropertyType.createPeopleProperty(persMin, persMax));
@@ -81,7 +81,7 @@ public class CreateActivity extends Activity {
         // Prijs
         String minPrijs = txtPrijsMin.getText().toString().trim();
         String maxPrijs = txtPrijsMax.getText().toString().trim();
-        if (!minPrijs.isEmpty() || !minPrijs.isEmpty()) {
+        if (!minPrijs.isEmpty() || !maxPrijs.isEmpty()) {
             int min = minPrijs.isEmpty() ? -1 : Integer.parseInt(minPrijs);
             int max = maxPrijs.isEmpty() ? 1000 : Integer.parseInt(maxPrijs);
             properties.add(PropertyType.createPriceProperty(min, max));
@@ -89,7 +89,7 @@ public class CreateActivity extends Activity {
         // Tijd
         String minTijd = txtTijdMin.getText().toString().trim();
         String maxTijd = txtTijdMax.getText().toString().trim();
-        if (!minTijd.isEmpty() || !minTijd.isEmpty()) {
+        if (!minTijd.isEmpty() || !maxTijd.isEmpty()) {
             int min = minTijd.isEmpty() ? -1 : Integer.parseInt(minTijd);
             int max = maxTijd.isEmpty() ? 1000 : Integer.parseInt(maxTijd);
             properties.add(PropertyType.createTimeProperty(min, max));
@@ -134,7 +134,12 @@ public class CreateActivity extends Activity {
             }
             properties.add(PropertyType.createTagsProperty(tagSet));
         }
-        return ((ApplicationVrijetijdsApp) getApplication()).getData().createActiviteit(name, description, manual, properties);
+        Activiteit a = ((ApplicationVrijetijdsApp) getApplication()).getData().createActiviteit(name, description, manual, properties);
+        if (a == null) {
+            Toast.makeText(this, R.string.toast_create_fail, Toast.LENGTH_SHORT).show();
+            return null;
+        }
+        return a;
     }
 
     public void btnCancel(View button) {
@@ -144,10 +149,10 @@ public class CreateActivity extends Activity {
 
     public void btnCreate(View button) {
         Activiteit a = createActiviteit();
-        Toast.makeText(this, "Activeit " + a.getName() + " created", Toast.LENGTH_SHORT).show();
         if (a == null) {
             return;
         }
+        Toast.makeText(this, R.string.toast_create_success, Toast.LENGTH_SHORT).show();
         Intent returnIntent = new Intent();
         storeActivityNameToIntent(returnIntent, a);
         setResult(RESULT_OK, returnIntent);

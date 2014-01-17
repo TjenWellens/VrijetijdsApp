@@ -19,4 +19,9 @@ public class RatingProperty extends GeneralProperty {
     public int getRating() {
         return rating;
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(rating);
+    }
 }

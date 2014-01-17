@@ -2,8 +2,10 @@ package eu.tjenwellens.vrijetijdsapp.storage.database;
 
 import android.content.Context;
 import eu.tjenwellens.vrijetijdsapp.Activiteit;
+import eu.tjenwellens.vrijetijdsapp.properties.Filter;
 import eu.tjenwellens.vrijetijdsapp.properties.Property;
 import eu.tjenwellens.vrijetijdsapp.storage.StorageStrategy;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -13,6 +15,7 @@ import java.util.Set;
  */
 public class DatabaseStorage implements StorageStrategy {
     private DatabaseHandler dbh;
+    List<Activiteit> selection = null;
 
     public DatabaseStorage(Context context) {
         this.dbh = new DatabaseHandler(context);
@@ -20,8 +23,11 @@ public class DatabaseStorage implements StorageStrategy {
 
     public Activiteit createActiviteit(String name, String description, String manual, Set<Property> properties) {
         DatabaseActiviteit da = new DatabaseActiviteit(name, description, manual, properties);
-        dbh.addActiviteit(da);
-        return da;
+        if (dbh.addActiviteit(da) >= 0) {
+            return da;
+        } else {
+            return null;
+        }
     }
 
     public Activiteit getActiviteit(String name) {
@@ -30,5 +36,13 @@ public class DatabaseStorage implements StorageStrategy {
 
     public List<Activiteit> getAllActiviteiten() {
         return dbh.getAllActiviteiten();
+    }
+
+    public List<Activiteit> getLatestSelection() {
+        return selection;
+    }
+
+    public List<Activiteit> filterActiviteiten(Set<Filter> filters) {
+        return this.selection = new ArrayList<Activiteit>(dbh.filterActiviteiten(filters));
     }
 }

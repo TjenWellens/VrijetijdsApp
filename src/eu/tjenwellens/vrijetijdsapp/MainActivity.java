@@ -8,13 +8,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class MainActivity extends Activity {
     public static final int CODE_CREATE_ACTIVITY = 1;
-    public static final int CODE_SEARCH_ACTIVITY = 1;
+    public static final int CODE_SEARCH_ACTIVITY = 2;
     private TextView lblMain;
-    private List<Activiteit> activiteiten;
+    private SortedSet<Activiteit> activiteiten;
     ApplicationVrijetijdsApp application;
 
     /**
@@ -25,7 +26,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         application = (ApplicationVrijetijdsApp) getApplication();
         initGUI();
-        loadActiviteiten();
+        loadAllActiviteiten();
     }
 
     private void initGUI() {
@@ -33,15 +34,21 @@ public class MainActivity extends Activity {
         lblMain = (TextView) findViewById(R.id.lblMain);
     }
 
-    private void loadActiviteiten() {
-        activiteiten = application.getData().getAllActiviteiten();
+    private void loadAllActiviteiten() {
+        activiteiten = new TreeSet<Activiteit>(application.getData().getAllActiviteiten());
+        updateGUI();
+    }
+
+    private void loadSelection() {
+        activiteiten = new TreeSet<Activiteit>(application.getData().getLatestSelection());
+        Toast.makeText(this, R.string.toast_search_success, Toast.LENGTH_SHORT).show();
         updateGUI();
     }
 
     private void updateGUI() {
         StringBuilder sb = new StringBuilder();
         for (Activiteit a : activiteiten) {
-            sb.append(a.getName()).append('\n');
+            sb.append(a.toString()).append('\n');
         }
         lblMain.setText(sb);
     }
@@ -56,7 +63,13 @@ public class MainActivity extends Activity {
                 Activiteit a = readActiviteit(data);
                 addActiviteit(a);
             } else if (resultCode == Activity.RESULT_CANCELED) {
-                Toast.makeText(this, "Changes cancelled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.toast_create_cancel, Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == CODE_SEARCH_ACTIVITY) {
+            if (resultCode == Activity.RESULT_OK) {
+                loadSelection();
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(this, R.string.toast_search_cancel, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -64,7 +77,6 @@ public class MainActivity extends Activity {
     private void addActiviteit(Activiteit a) {
         activiteiten.add(a);
         updateGUI();
-        Toast.makeText(this, "Activeit " + a.getName() + " added", Toast.LENGTH_SHORT).show();
     }
 
     private Activiteit readActiviteit(Intent intent) {
@@ -73,11 +85,6 @@ public class MainActivity extends Activity {
             return null;
         }
         return ((ApplicationVrijetijdsApp) getApplication()).getData().getActiviteit(name);
-    }
-
-    private void startCreateActivity() {
-        Intent intent = new Intent(this, CreateActivity.class);
-        startActivityForResult(intent, CODE_CREATE_ACTIVITY);
     }
 
     @Override
@@ -97,8 +104,24 @@ public class MainActivity extends Activity {
             case R.id.menu_settings:
                 // todo
                 return true;
+            case R.id.menu_search:
+                startFilterActivity();
+                return true;
+            case R.id.menu_show_all:
+                loadAllActiviteiten();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void startCreateActivity() {
+        Intent intent = new Intent(this, CreateActivity.class);
+        startActivityForResult(intent, CODE_CREATE_ACTIVITY);
+    }
+
+    private void startFilterActivity() {
+        Intent intent = new Intent(this, FilterActivity.class);
+        startActivityForResult(intent, CODE_SEARCH_ACTIVITY);
     }
 }
