@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 import eu.tjenwellens.vrijetijdsapp.properties.Property;
-import eu.tjenwellens.vrijetijdsapp.properties.PropertyFactory;
+import eu.tjenwellens.vrijetijdsapp.properties.PropertyType;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
@@ -76,7 +76,7 @@ public class CreateActivity extends Activity {
         if (!minPers.isEmpty() || !minPers.isEmpty()) {
             int persMin = minPers.isEmpty() ? -1 : Integer.parseInt(minPers);
             int persMax = maxPers.isEmpty() ? 1000 : Integer.parseInt(maxPers);
-            properties.add(PropertyFactory.createPeopleProperty(persMin, persMax));
+            properties.add(PropertyType.createPeopleProperty(persMin, persMax));
         }
         // Prijs
         String minPrijs = txtPrijsMin.getText().toString().trim();
@@ -84,7 +84,7 @@ public class CreateActivity extends Activity {
         if (!minPrijs.isEmpty() || !minPrijs.isEmpty()) {
             int min = minPrijs.isEmpty() ? -1 : Integer.parseInt(minPrijs);
             int max = maxPrijs.isEmpty() ? 1000 : Integer.parseInt(maxPrijs);
-            properties.add(PropertyFactory.createPriceProperty(min, max));
+            properties.add(PropertyType.createPriceProperty(min, max));
         }
         // Tijd
         String minTijd = txtTijdMin.getText().toString().trim();
@@ -92,7 +92,7 @@ public class CreateActivity extends Activity {
         if (!minTijd.isEmpty() || !minTijd.isEmpty()) {
             int min = minTijd.isEmpty() ? -1 : Integer.parseInt(minTijd);
             int max = maxTijd.isEmpty() ? 1000 : Integer.parseInt(maxTijd);
-            properties.add(PropertyFactory.createTimeProperty(min, max));
+            properties.add(PropertyType.createTimeProperty(min, max));
         }
         // Plaats
         int checkedId = rgPlaats.getCheckedRadioButtonId();
@@ -106,7 +106,7 @@ public class CreateActivity extends Activity {
                 Logger.getLogger(CreateActivity.class.toString()).log(Level.SEVERE, "Wrong radiobutton found in plaatsgroup: {0}", findViewById(checkedId));
             }
             if (location != null) {
-                properties.add(PropertyFactory.createLocationProperty(location));
+                properties.add(PropertyType.createLocationProperty(location));
             }
         }
         // Energie
@@ -121,7 +121,7 @@ public class CreateActivity extends Activity {
                 Logger.getLogger(CreateActivity.class.toString()).log(Level.SEVERE, "Wrong radiobutton found in energiegroup: {0}", findViewById(checkedId));
             }
             if (energy != null) {
-                properties.add(PropertyFactory.createEnergyProperty(energy));
+                properties.add(PropertyType.createEnergyProperty(energy));
             }
         }
         // Tags
@@ -132,7 +132,7 @@ public class CreateActivity extends Activity {
             for (int i = 0; i < tags.length; i++) {
                 tagSet.add(tags[i].trim());
             }
-            properties.add(PropertyFactory.createTagsProperty(tagSet));
+            properties.add(PropertyType.createTagsProperty(tagSet));
         }
         return ((ApplicationVrijetijdsApp) getApplication()).getData().createActiviteit(name, description, manual, properties);
     }

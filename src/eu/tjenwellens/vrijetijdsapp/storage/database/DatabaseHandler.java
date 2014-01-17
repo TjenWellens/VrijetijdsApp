@@ -252,29 +252,29 @@ class DatabaseHandler extends SQLiteOpenHelper {
 //            long id = cursor.getLong(0);
             switch (type) {
                 case ENERGY:
-                    property = PropertyFactory.createEnergyProperty(cursor.getString(1));
+                    property = PropertyType.createEnergyProperty(cursor.getString(1));
                     break;
                 case LOCATION:
-                    property = PropertyFactory.createLocationProperty(cursor.getString(1));
+                    property = PropertyType.createLocationProperty(cursor.getString(1));
                     break;
                 case TIME:
-                    property = PropertyFactory.createTimeProperty(cursor.getInt(1), cursor.getInt(2));
+                    property = PropertyType.createTimeProperty(cursor.getInt(1), cursor.getInt(2));
                     break;
                 case PEOPLE:
-                    property = PropertyFactory.createPeopleProperty(cursor.getInt(1), cursor.getInt(2));
+                    property = PropertyType.createPeopleProperty(cursor.getInt(1), cursor.getInt(2));
                     break;
                 case PRICE:
-                    property = PropertyFactory.createPriceProperty(cursor.getInt(1), cursor.getInt(2));
+                    property = PropertyType.createPriceProperty(cursor.getInt(1), cursor.getInt(2));
                     break;
                 case RATING:
-                    property = PropertyFactory.createRatingProperty(cursor.getInt(1));
+                    property = PropertyType.createRatingProperty(cursor.getInt(1));
                     break;
                 case TAGS:
                     LinkedList<String> values = new LinkedList<String>();
                     do {
                         values.add(cursor.getString(1));
                     } while (cursor.moveToNext());
-                    property = PropertyFactory.createTagsProperty(values);
+                    property = PropertyType.createTagsProperty(values);
                     break;
                 default:
                     throw new PropertyTypeUnknowmException(type);
