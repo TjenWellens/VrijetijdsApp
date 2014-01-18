@@ -111,7 +111,7 @@ class DatabaseHandler extends SQLiteOpenHelper {
                 create.append(',').append(KEY_PROPERTY_RATING).append(" INTEGER");
                 break;
             default:
-                throw new PropertyTypeUnknowmException(type);
+                throw new PropertyTypeUnknownException(type);
         }
         create.append(')');
         db.execSQL(create.toString());
@@ -258,7 +258,7 @@ class DatabaseHandler extends SQLiteOpenHelper {
                 }
                 return 0;
             default:
-                throw new PropertyTypeUnknowmException(type);
+                throw new PropertyTypeUnknownException(type);
         }
         // Inserting Row
         return db.insert(table, null, values);
@@ -329,7 +329,7 @@ class DatabaseHandler extends SQLiteOpenHelper {
                     property = PropertyType.createTagsProperty(values);
                     break;
                 default:
-                    throw new PropertyTypeUnknowmException(type);
+                    throw new PropertyTypeUnknownException(type);
             }
         }
         cursor.close();
@@ -490,7 +490,7 @@ class DatabaseHandler extends SQLiteOpenHelper {
                 }
                 break;
             default:
-                throw new PropertyTypeUnknowmException(filter.getType());
+                throw new PropertyTypeUnknownException(filter.getType());
         }
         selection.append(')');
         Cursor c = db.query(PROPERTY_TABLES.get(filter.getType()), new String[]{KEY_ACTIVITEIT_ID}, selection.toString(), selectionArgs, null, null, null);
@@ -502,26 +502,79 @@ class DatabaseHandler extends SQLiteOpenHelper {
         c.close();
         return ids;
     }
-//    // Updating single contact
-//    public int updateActiviteit(ActiviteitI activiteit) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//
-//        ContentValues values = new ContentValues();
-//        values.put(KEY_ID, activiteit.getActiviteitId());        // id
-//        values.put(KEY_KAL_NAME, activiteit.getKalenderName()); // kalender
-//        values.put(KEY_TITLE, activiteit.getActiviteitTitle());        // title
-//        values.put(KEY_START_MILLIS, activiteit.getBeginMillis()); // begin
-//        values.put(KEY_STOP_MILLIS, activiteit.getEndMillis()); // end
-//        values.put(KEY_DETAILS, activiteit.getDescription()); // description
-//        int result = db.update(TABLE_ACTIVITEITEN, values, KEY_ID + " = ?",
-//                new String[]{
-//                    String.valueOf(activiteit.getActiviteitId())
-//                });
-//        db.close();
-//        // updating row
-//        return result;
-//    }
-//
+
+    public Activiteit updateActiviteit(Activiteit oldActiviteit, String newName, String newDescription, String newManual, Set<Property> newProperties) {
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+            return updateActiviteit(db, oldActiviteit, newName, newDescription, newManual, newProperties);
+        } finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+    }
+
+    private long getActiviteitId(SQLiteDatabase db, String name) {
+        long id = -1;
+        Cursor c = db.query(TABLE_ACTIVITEITEN, new String[]{KEY_ACTIVITEIT_ID}, KEY_ACTIVITEIT_NAME + " = ?", new String[]{name}, null, null, null);
+        if (c.moveToFirst()) {
+            id = c.getLong(0);
+        }
+        c.close();
+        return id;
+    }
+
+    private long updateActiviteitValues(SQLiteDatabase db, Activiteit oldActiviteit, String newName, String newDescription, String newManual) {
+        long id = getActiviteitId(db, oldActiviteit.getName());
+        ContentValues values = new ContentValues();
+        if (differ(oldActiviteit.getName(), newName)) {
+            values.put(KEY_ACTIVITEIT_NAME, newName);
+        }
+        if (differ(oldActiviteit.getDescription(), newDescription)) {
+            values.put(KEY_ACTIVITEIT_DESCRIPTION, newDescription);
+        }
+        if (differ(oldActiviteit.getManual(), newManual)) {
+            values.put(KEY_ACTIVITEIT_MANUAL, newManual);
+        }
+        db.update(TABLE_ACTIVITEITEN, values, KEY_ACTIVITEIT_ID + " = " + id, null);
+        return id;
+    }
+
+    private void updateProperties(SQLiteDatabase db, long activiteitId, Collection<Property> oldProps, Collection<Property> newProps) {
+        removeProperties(db, oldProps, activiteitId);
+        addProperties(db, newProps, activiteitId);
+    }
+
+    private Activiteit updateActiviteit(SQLiteDatabase db, Activiteit oldActiviteit, String newName, String newDescription, String newManual, Set<Property> newProperties) {
+        // activiteit
+        long activiteitId = updateActiviteitValues(db, oldActiviteit, newName, newDescription, newManual);
+        // properties
+        updateProperties(db, activiteitId, oldActiviteit.getProperties().values(), newProperties);
+        return getActiviteitById(db, activiteitId);
+    }
+
+    private int removeProperties(SQLiteDatabase db, Collection<Property> properties, long activiteitId) {
+        int rows = 0;
+        for (Property property : properties) {
+            rows += removeProperty(db, property, activiteitId);
+        }
+        return rows;
+    }
+
+    private int removeProperty(SQLiteDatabase db, Property property, long activiteitId) {
+        return db.delete(PROPERTY_TABLES.get(property.getType()), KEY_ACTIVITEIT_ID + " = " + activiteitId, null);
+    }
+
+    private boolean differ(String a, String b) {
+        if (a == null && b == null) {
+            return false;
+        } else if (a == null || b == null) {
+            return true;
+        } else {
+            return a.equals(b);
+        }
+    }
 //    // Deleting single contact
 //    public void deleteActiviteit(ActiviteitI activiteit) {
 //        SQLiteDatabase db = this.getWritableDatabase();

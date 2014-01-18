@@ -20,4 +20,6 @@ public interface StorageStrategy {
     List<Activiteit> getLatestSelection();
 
     List<Activiteit> filterActiviteiten(Set<Filter> filters);
+
+    Activiteit updateActiviteit(Activiteit oldActiviteit, String newName, String newDescription, String newManual, Set<Property> newProperties);
 }

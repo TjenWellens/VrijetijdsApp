@@ -1,11 +1,14 @@
-package eu.tjenwellens.vrijetijdsapp;
+package eu.tjenwellens.vrijetijdsapp.views;
 
+import eu.tjenwellens.vrijetijdsapp.ApplicationVrijetijdsApp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Toast;
+import eu.tjenwellens.vrijetijdsapp.R;
 import eu.tjenwellens.vrijetijdsapp.properties.Filter;
 import eu.tjenwellens.vrijetijdsapp.properties.PropertyType;
 import java.util.HashSet;
@@ -60,6 +63,7 @@ public class FilterActivity extends Activity {
 
     public void btnCancel(View button) {
         setResult(RESULT_CANCELED, new Intent());
+        Toast.makeText(this, R.string.toast_search_cancel, Toast.LENGTH_SHORT).show();
         finish();
     }
 
@@ -67,6 +71,7 @@ public class FilterActivity extends Activity {
         application.getData().filterActiviteiten(createFilters());
         Intent returnIntent = new Intent();
         setResult(RESULT_OK, returnIntent);
+        Toast.makeText(this, R.string.toast_search_success, Toast.LENGTH_SHORT).show();
         finish();
     }
 

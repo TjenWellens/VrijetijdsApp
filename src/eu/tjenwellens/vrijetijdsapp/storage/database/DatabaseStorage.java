@@ -45,4 +45,8 @@ public class DatabaseStorage implements StorageStrategy {
     public List<Activiteit> filterActiviteiten(Set<Filter> filters) {
         return this.selection = new ArrayList<Activiteit>(dbh.filterActiviteiten(filters));
     }
+
+    public Activiteit updateActiviteit(Activiteit oldActiviteit, String newName, String newDescription, String newManual, Set<Property> newProperties) {
+        return this.dbh.updateActiviteit(oldActiviteit, newName, newDescription, newManual, newProperties);
+    }
 }

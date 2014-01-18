@@ -1,4 +1,4 @@
-package eu.tjenwellens.vrijetijdsapp;
+package eu.tjenwellens.vrijetijdsapp.views;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+import eu.tjenwellens.vrijetijdsapp.Activiteit;
+import eu.tjenwellens.vrijetijdsapp.ApplicationVrijetijdsApp;
+import eu.tjenwellens.vrijetijdsapp.R;
 import eu.tjenwellens.vrijetijdsapp.properties.Property;
 import eu.tjenwellens.vrijetijdsapp.properties.PropertyType;
 import java.util.HashSet;
@@ -144,6 +147,7 @@ public class CreateActivity extends Activity {
 
     public void btnCancel(View button) {
         setResult(RESULT_CANCELED, new Intent());
+        Toast.makeText(this, R.string.toast_create_cancel, Toast.LENGTH_SHORT).show();
         finish();
     }
 
@@ -152,14 +156,14 @@ public class CreateActivity extends Activity {
         if (a == null) {
             return;
         }
-        Toast.makeText(this, R.string.toast_create_success, Toast.LENGTH_SHORT).show();
         Intent returnIntent = new Intent();
         storeActivityNameToIntent(returnIntent, a);
         setResult(RESULT_OK, returnIntent);
+        Toast.makeText(this, R.string.toast_create_success, Toast.LENGTH_SHORT).show();
         finish();
     }
 
     private void storeActivityNameToIntent(Intent intent, Activiteit a) {
-        intent.putExtra("activiteit_name", a.getName());
+        intent.putExtra(ApplicationVrijetijdsApp.ACTIVITEIT_NAME, a.getName());
     }
 }

@@ -1,4 +1,4 @@
-package eu.tjenwellens.vrijetijdsapp;
+package eu.tjenwellens.vrijetijdsapp.views;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,15 +6,23 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import eu.tjenwellens.vrijetijdsapp.Activiteit;
+import eu.tjenwellens.vrijetijdsapp.ApplicationVrijetijdsApp;
+import eu.tjenwellens.vrijetijdsapp.R;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MainActivity extends Activity {
     public static final int CODE_CREATE_ACTIVITY = 1;
     public static final int CODE_SEARCH_ACTIVITY = 2;
-    private TextView lblMain;
+    public static final int CODE_EDIT_ACTIVITY = 3;
+    private ViewGroup container;
     private SortedSet<Activiteit> activiteiten;
     ApplicationVrijetijdsApp application;
 
@@ -31,7 +39,7 @@ public class MainActivity extends Activity {
 
     private void initGUI() {
         setContentView(R.layout.main);
-        lblMain = (TextView) findViewById(R.id.lblMain);
+        container = (ViewGroup) findViewById(R.id.mainContainer);
     }
 
     private void loadAllActiviteiten() {
@@ -41,16 +49,30 @@ public class MainActivity extends Activity {
 
     private void loadSelection() {
         activiteiten = new TreeSet<Activiteit>(application.getData().getLatestSelection());
-        Toast.makeText(this, R.string.toast_search_success, Toast.LENGTH_SHORT).show();
         updateGUI();
     }
 
     private void updateGUI() {
-        StringBuilder sb = new StringBuilder();
-        for (Activiteit a : activiteiten) {
-            sb.append(a.toString()).append('\n');
+        container.removeAllViews();
+        Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, "Removed views");
+        TextView tv;
+        for (final Activiteit a : activiteiten) {
+            tv = new TextView(this);
+            tv.setText(a.toString());
+            tv.setClickable(true);
+            tv.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View arg0) {
+                    activiteitClicked(a);
+                }
+            });
+            container.addView(tv);
         }
-        lblMain.setText(sb);
+    }
+
+    private void activiteitClicked(Activiteit a) {
+        // TODO: start edit or menu
+        Toast.makeText(this, "Activiteit clicked: " + a, Toast.LENGTH_SHORT).show();
+        startEditActivity(a.getName());
     }
 
     /*
@@ -63,13 +85,11 @@ public class MainActivity extends Activity {
                 Activiteit a = readActiviteit(data);
                 addActiviteit(a);
             } else if (resultCode == Activity.RESULT_CANCELED) {
-                Toast.makeText(this, R.string.toast_create_cancel, Toast.LENGTH_SHORT).show();
             }
         } else if (requestCode == CODE_SEARCH_ACTIVITY) {
             if (resultCode == Activity.RESULT_OK) {
                 loadSelection();
             } else if (resultCode == Activity.RESULT_CANCELED) {
-                Toast.makeText(this, R.string.toast_search_cancel, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -80,7 +100,7 @@ public class MainActivity extends Activity {
     }
 
     private Activiteit readActiviteit(Intent intent) {
-        String name = intent.getStringExtra("activiteit_name");
+        String name = intent.getStringExtra(ApplicationVrijetijdsApp.ACTIVITEIT_NAME);
         if (name == null) {
             return null;
         }
@@ -123,5 +143,11 @@ public class MainActivity extends Activity {
     private void startFilterActivity() {
         Intent intent = new Intent(this, FilterActivity.class);
         startActivityForResult(intent, CODE_SEARCH_ACTIVITY);
+    }
+
+    private void startEditActivity(String activiteitName) {
+        Intent intent = new Intent(this, EditActivity.class);
+        intent.putExtra(ApplicationVrijetijdsApp.ACTIVITEIT_NAME, activiteitName);
+        startActivityForResult(intent, CODE_EDIT_ACTIVITY);
     }
 }
