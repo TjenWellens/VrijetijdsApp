@@ -58,7 +58,7 @@ public class MainActivity extends Activity {
         TextView tv;
         for (final Activiteit a : activiteiten) {
             tv = new TextView(this);
-            tv.setText(a.toString());
+            tv.setText(a.getName());
             tv.setClickable(true);
             tv.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View arg0) {

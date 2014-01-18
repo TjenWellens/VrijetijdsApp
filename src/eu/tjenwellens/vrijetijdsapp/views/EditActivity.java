@@ -109,20 +109,20 @@ public class EditActivity extends Activity {
                 case TIME:
                     int minTime = ((MinMaxProperty) property).getMin();
                     int maxTime = ((MinMaxProperty) property).getMax();
-                    txtTijdMin.setText(minTime);
-                    txtTijdMax.setText(maxTime);
+                    txtTijdMin.setText(String.valueOf(minTime));
+                    txtTijdMax.setText(String.valueOf(maxTime));
                     break;
                 case PEOPLE:
                     int minPpl = ((MinMaxProperty) property).getMin();
                     int maxPpl = ((MinMaxProperty) property).getMax();
-                    txtPersonenMin.setText(minPpl);
-                    txtPersonenMax.setText(maxPpl);
+                    txtPersonenMin.setText(String.valueOf(minPpl));
+                    txtPersonenMax.setText(String.valueOf(maxPpl));
                     break;
                 case PRICE:
                     int minPrice = ((MinMaxProperty) property).getMin();
                     int maxPrice = ((MinMaxProperty) property).getMax();
-                    txtPrijsMin.setText(minPrice);
-                    txtPrijsMax.setText(maxPrice);
+                    txtPrijsMin.setText(String.valueOf(minPrice));
+                    txtPrijsMax.setText(String.valueOf(maxPrice));
                     break;
                 case RATING:
                     int rating = ((RatingProperty) property).getRating();
