@@ -220,9 +220,24 @@ public class EditActivity extends Activity {
         return a;
     }
 
+    private boolean removeActiviteit(Activiteit oldActiviteit) {
+        return ((ApplicationVrijetijdsApp) getApplication()).getData().removeActiviteit(oldActiviteit);
+    }
+
     public void btnCancel(View button) {
         setResult(RESULT_CANCELED, new Intent());
         Toast.makeText(this, R.string.toast_edit_cancel, Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    public void btnDelete(View button) {
+        if (!removeActiviteit(oldActiviteit)) {
+            return;
+        }
+        Intent returnIntent = new Intent();
+        storeActivityNameToIntent(returnIntent, oldActiviteit);
+        setResult(RESULT_OK, returnIntent);
+        Toast.makeText(this, R.string.toast_edit_removed, Toast.LENGTH_SHORT).show();
         finish();
     }
 

@@ -47,12 +47,14 @@
     <string name="edit_btn_rustig">Rustig</string>
     <string name="edit_btn_actief">Actief</string>
     <string name="edit_btn_cancel">Annuleer</string>
+    <string name="edit_btn_delete">Verwijder</string>
     <string name="edit_btn_save">Opslaan</string>
     <!-- toast messages -->
     <string name="toast_edit_fail">Het aanpassen van de activiteit is mislukt. Is de naam uniek?</string>
     <string name="toast_edit_nameless">Je moet een naam opgeven.</string>
     <string name="toast_edit_success">Activiteit aangepast!</string>
     <string name="toast_edit_cancel">Aanpassen geannuleerd</string>
+    <string name="toast_edit_removed">Activiteit verwijderd!</string>
     
     <!-- activity search --> 
     <string name="search_hint_tags">tag1, tag2, &#8230;</string>

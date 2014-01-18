@@ -206,6 +206,14 @@
             android:text="@string/edit_btn_cancel" />
 
         <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="btnDelete"
+            android:text="@string/edit_btn_delete" />
+
+        <Button
             android:id="@+id/btnSave"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

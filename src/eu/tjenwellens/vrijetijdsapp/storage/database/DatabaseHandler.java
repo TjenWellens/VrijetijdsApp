@@ -575,16 +575,31 @@ class DatabaseHandler extends SQLiteOpenHelper {
             return a.equals(b);
         }
     }
-//    // Deleting single contact
-//    public void deleteActiviteit(ActiviteitI activiteit) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        db.delete(TABLE_ACTIVITEITEN, KEY_ID + " = ?",
-//                new String[]{
-//                    String.valueOf(activiteit.getActiviteitId())
-//                });
-//        db.close();
-//    }
-//
+
+    public boolean removeActiviteit(Activiteit oldActiviteit) {
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+            return removeActiviteit(db, oldActiviteit);
+        } finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+    }
+
+    private boolean removeActiviteit(SQLiteDatabase db, Activiteit oldActiviteit) {
+        long id = getActiviteitId(db, oldActiviteit.getName());
+        if (!removeActiviteitValues(db, id)) {
+            return false;
+        }
+        removeProperties(db, oldActiviteit.getProperties().values(), id);
+        return true;
+    }
+
+    private boolean removeActiviteitValues(SQLiteDatabase db, long id) {
+        return db.delete(TABLE_ACTIVITEITEN, KEY_ACTIVITEIT_ID + " = " + id, null) > 0;
+    }
 //    // Getting contacts Count
 //    public int getActiviteitenCount() {
 //        String countQuery = "SELECT  * FROM " + TABLE_ACTIVITEITEN;

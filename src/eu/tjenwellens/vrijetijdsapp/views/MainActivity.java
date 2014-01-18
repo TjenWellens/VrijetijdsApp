@@ -70,8 +70,6 @@ public class MainActivity extends Activity {
     }
 
     private void activiteitClicked(Activiteit a) {
-        // TODO: start edit or menu
-        Toast.makeText(this, "Activiteit clicked: " + a, Toast.LENGTH_SHORT).show();
         startEditActivity(a.getName());
     }
 
@@ -80,16 +78,19 @@ public class MainActivity extends Activity {
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CODE_CREATE_ACTIVITY) {
-            if (resultCode == Activity.RESULT_OK) {
-                Activiteit a = readActiviteit(data);
-                addActiviteit(a);
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-            }
-        } else if (requestCode == CODE_SEARCH_ACTIVITY) {
-            if (resultCode == Activity.RESULT_OK) {
-                loadSelection();
-            } else if (resultCode == Activity.RESULT_CANCELED) {
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case CODE_CREATE_ACTIVITY:
+                    addActiviteit(readActiviteit(data));
+                    break;
+                case CODE_SEARCH_ACTIVITY:
+                    loadSelection();
+                    break;
+                case CODE_EDIT_ACTIVITY:
+                    loadAllActiviteiten();
+                    break;
+                default:
+                // ignore
             }
         }
     }
