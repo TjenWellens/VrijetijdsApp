@@ -189,6 +189,43 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/create_hint_tags" />
+            
+            <TextView
+                android:id="@+id/lblRating"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/create_lbl_rating" />
+
+            <RadioGroup
+                android:id="@+id/rgRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/rbtnRatingFun"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/create_btn_fun" />
+
+                <RadioButton
+                    android:id="@+id/rbtnRatingTry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/create_btn_try" />
+
+                <RadioButton
+                    android:id="@+id/rbtnRatingNoTry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/create_btn_notry" />
+
+                <RadioButton
+                    android:id="@+id/rbtnRatingNoFun"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/create_btn_nofun" />
+            </RadioGroup>
         </LinearLayout>
     </ScrollView>
 

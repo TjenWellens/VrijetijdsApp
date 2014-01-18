@@ -1,6 +1,5 @@
 package eu.tjenwellens.vrijetijdsapp.views;
 
-import eu.tjenwellens.vrijetijdsapp.ApplicationVrijetijdsApp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,9 +7,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+import eu.tjenwellens.vrijetijdsapp.ApplicationVrijetijdsApp;
 import eu.tjenwellens.vrijetijdsapp.R;
 import eu.tjenwellens.vrijetijdsapp.properties.Filter;
 import eu.tjenwellens.vrijetijdsapp.properties.PropertyType;
+import eu.tjenwellens.vrijetijdsapp.properties.RatingProperty;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
@@ -25,7 +26,7 @@ public class FilterActivity extends Activity {
     private EditText txtPersonen, txtPrijs, txtTijd, txtTags;
 //    private RadioButton rbtnPlaatsBinnen, rbtnPlaatsBuiten, rbtnEnergieRustig, rbtnEnergieActief;
 //    private Button btnCancel, btnCreate;
-    private RadioGroup rgPlaats, rgEnergie;
+    private RadioGroup rgPlaats, rgEnergie, rgRating;
     ApplicationVrijetijdsApp application;
 
     /**
@@ -59,6 +60,7 @@ public class FilterActivity extends Activity {
         // radiogroup
         rgPlaats = (RadioGroup) findViewById(R.id.rgPlaats);
         rgEnergie = (RadioGroup) findViewById(R.id.rgEnergie);
+        rgRating = (RadioGroup) findViewById(R.id.rgRating);
     }
 
     public void btnCancel(View button) {
@@ -135,9 +137,28 @@ public class FilterActivity extends Activity {
             }
             filters.add(new Filter(PropertyType.TAGS, tagSet));
         }
-        for (Filter filter : filters) {
-            Logger.getLogger(FilterActivity.class.toString()).log(Level.SEVERE, "Filters:");
-            Logger.getLogger(FilterActivity.class.toString()).log(Level.SEVERE, "Filter: " + filter);
+        // Rating
+        checkedId = rgRating.getCheckedRadioButtonId();
+        int rating = 0;
+        switch (checkedId) {
+            case R.id.rbtnRatingFun:
+                rating = RatingProperty.FUN;
+                break;
+            case R.id.rbtnRatingNoFun:
+                rating = RatingProperty.NOT_FUN;
+                break;
+            case R.id.rbtnRatingTry:
+                rating = RatingProperty.TRY;
+                break;
+            case R.id.rbtnRatingNoTry:
+                rating = RatingProperty.NOT_TRY;
+                break;
+            case -1:
+            default:
+                Logger.getLogger(FilterActivity.class.toString()).log(Level.SEVERE, "Wrong radiobutton found in plaatsgroup: {0}", findViewById(checkedId));
+        }
+        if (rating != 0) {
+            filters.add(new Filter(PropertyType.RATING, String.valueOf(rating)));
         }
         return filters;
     }

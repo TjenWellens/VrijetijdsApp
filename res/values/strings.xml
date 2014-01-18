@@ -17,6 +17,11 @@
     <string name="create_lbl_tijd">Tijdsduur</string>
     <string name="create_lbl_tags">Tags</string>
     <string name="create_lbl_energie">Energie</string>
+    <string name="create_lbl_rating">Beoordeling</string>
+    <string name="create_btn_fun">Vond ik leuk</string>
+    <string name="create_btn_try">Wil ik eens proberen</string>
+    <string name="create_btn_notry">Wil ik niet proberen</string>
+    <string name="create_btn_nofun">Vond ik niet leuk</string>
     <string name="create_btn_binnen">Binnen</string>
     <string name="create_btn_buiten">Buiten</string>
     <string name="create_btn_rustig">Rustig</string>
@@ -42,6 +47,11 @@
     <string name="edit_lbl_tijd">Tijdsduur</string>
     <string name="edit_lbl_tags">Tags</string>
     <string name="edit_lbl_energie">Energie</string>
+    <string name="edit_lbl_rating">Beoordeling</string>
+    <string name="edit_btn_fun">Vond ik leuk</string>
+    <string name="edit_btn_try">Wil ik eens proberen</string>
+    <string name="edit_btn_notry">Wil ik niet proberen</string>
+    <string name="edit_btn_nofun">Vond ik niet leuk</string>
     <string name="edit_btn_binnen">Binnen</string>
     <string name="edit_btn_buiten">Buiten</string>
     <string name="edit_btn_rustig">Rustig</string>
@@ -64,6 +74,11 @@
     <string name="search_lbl_tijd">Tijdsduur</string>
     <string name="search_lbl_tags">Tags</string>
     <string name="search_lbl_energie">Energie</string>
+    <string name="search_lbl_rating">Beoordeling</string>
+    <string name="search_btn_fun">Vond ik leuk</string>
+    <string name="search_btn_try">Wil ik eens proberen</string>
+    <string name="search_btn_notry">Wil ik niet proberen</string>
+    <string name="search_btn_nofun">Vond ik niet leuk</string>
     <string name="search_btn_binnen">Binnen</string>
     <string name="search_btn_buiten">Buiten</string>
     <string name="search_btn_rustig">Rustig</string>
@@ -76,7 +91,7 @@
 
     <!-- menu -->
     <string name="menu_settings">Instellingen</string>
-    <string name="menu_create">Niew maken</string>
+    <string name="menu_create">Nieuw maken</string>
     <string name="menu_search">Zoeken</string>
     <string name="menu_show_all">Toon alle</string>
     

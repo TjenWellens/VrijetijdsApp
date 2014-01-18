@@ -11,6 +11,7 @@ import android.widget.Toast;
 import eu.tjenwellens.vrijetijdsapp.Activiteit;
 import eu.tjenwellens.vrijetijdsapp.ApplicationVrijetijdsApp;
 import eu.tjenwellens.vrijetijdsapp.R;
+import eu.tjenwellens.vrijetijdsapp.properties.Filter;
 import eu.tjenwellens.vrijetijdsapp.properties.MinMaxProperty;
 import eu.tjenwellens.vrijetijdsapp.properties.MultiValueProperty;
 import eu.tjenwellens.vrijetijdsapp.properties.Property;
@@ -31,9 +32,9 @@ import java.util.logging.Logger;
 public class EditActivity extends Activity {
     private EditText txtName, txtDescription, txtManual, txtPersonenMin,
             txtPersonenMax, txtPrijsMin, txtPrijsMax, txtTijdMin, txtTijdMax, txtTags;
-    private RadioButton rbtnPlaatsBinnen, rbtnPlaatsBuiten, rbtnEnergieRustig, rbtnEnergieActief;
+    private RadioButton rbtnPlaatsBinnen, rbtnPlaatsBuiten, rbtnEnergieRustig, rbtnEnergieActief, rbtnRatingFun, rbtnRatingNoFun, rbtnRatingTry, rbtnRatingNoTry;
 //    private Button btnCancel, btnCreate;
-    private RadioGroup rgPlaats, rgEnergie;
+    private RadioGroup rgPlaats, rgEnergie, rgRating;
     //
     private Activiteit oldActiviteit;
 
@@ -66,12 +67,18 @@ public class EditActivity extends Activity {
         rbtnPlaatsBuiten = (RadioButton) findViewById(R.id.rbtnPlaatsBuiten);
         rbtnEnergieRustig = (RadioButton) findViewById(R.id.rbtnEnergieRustig);
         rbtnEnergieActief = (RadioButton) findViewById(R.id.rbtnEnergieActief);
+
+        rbtnRatingFun = (RadioButton) findViewById(R.id.rbtnRatingFun);
+        rbtnRatingNoFun = (RadioButton) findViewById(R.id.rbtnRatingNoFun);
+        rbtnRatingTry = (RadioButton) findViewById(R.id.rbtnRatingTry);
+        rbtnRatingNoTry = (RadioButton) findViewById(R.id.rbtnRatingNoTry);
         //        // btn
         //        btnCancel = (Button) findViewById(R.id.btnCancel);
         //        btnCreate = (Button) findViewById(R.id.btnCreate);
         // radiogroup
         rgPlaats = (RadioGroup) findViewById(R.id.rgPlaats);
         rgEnergie = (RadioGroup) findViewById(R.id.rgEnergie);
+        rgRating = (RadioGroup) findViewById(R.id.rgRating);
     }
 
     private String getOldNameFromIntent() {
@@ -126,7 +133,20 @@ public class EditActivity extends Activity {
                     break;
                 case RATING:
                     int rating = ((RatingProperty) property).getRating();
-                    // TODO: rating?
+                    switch (rating) {
+                        case RatingProperty.FUN:
+                            rbtnRatingFun.setChecked(true);
+                            break;
+                        case RatingProperty.NOT_FUN:
+                            rbtnRatingNoFun.setChecked(true);
+                            break;
+                        case RatingProperty.NOT_TRY:
+                            rbtnRatingNoTry.setChecked(true);
+                            break;
+                        case RatingProperty.TRY:
+                            rbtnRatingTry.setChecked(true);
+                            break;
+                    }
                     break;
                 case TAGS:
                     String tags = ((MultiValueProperty) property).getValue(",");
@@ -212,6 +232,30 @@ public class EditActivity extends Activity {
             }
             newProperties.add(PropertyType.createTagsProperty(tagSet));
         }
+        // Rating
+        checkedId = rgRating.getCheckedRadioButtonId();
+        int rating = 0;
+        switch (checkedId) {
+            case R.id.rbtnRatingFun:
+                rating = RatingProperty.FUN;
+                break;
+            case R.id.rbtnRatingNoFun:
+                rating = RatingProperty.NOT_FUN;
+                break;
+            case R.id.rbtnRatingTry:
+                rating = RatingProperty.TRY;
+                break;
+            case R.id.rbtnRatingNoTry:
+                rating = RatingProperty.NOT_TRY;
+                break;
+            case -1:
+            default:
+                Logger.getLogger(FilterActivity.class.toString()).log(Level.SEVERE, "Wrong radiobutton found in plaatsgroup: {0}", findViewById(checkedId));
+        }
+        if (rating != 0) {
+            newProperties.add(PropertyType.createRatingProperty(rating));
+        }
+        // Create activiteit
         Activiteit a = ((ApplicationVrijetijdsApp) getApplication()).getData().updateActiviteit(oldActiviteit, newName, newDescription, newManual, newProperties);
         if (a == null) {
             Toast.makeText(this, R.string.toast_edit_fail, Toast.LENGTH_SHORT).show();
