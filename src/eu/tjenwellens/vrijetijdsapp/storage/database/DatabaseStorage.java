@@ -25,6 +25,8 @@ public class DatabaseStorage implements StorageStrategy {
     public Activiteit createActiviteit(String name, String description, String manual, Set<Property> properties) {
         DatabaseActiviteit da = new DatabaseActiviteit(name, description, manual, properties);
         if (dbh.addActiviteit(da) >= 0) {
+            // TODO: check if applies to selection?
+            selection.add(da);
             return da;
         } else {
             return null;

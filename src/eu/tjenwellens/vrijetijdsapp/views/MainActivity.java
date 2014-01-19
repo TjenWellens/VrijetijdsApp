@@ -17,9 +17,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class MainActivity extends Activity {
-    public static final int CODE_CREATE_ACTIVITY = 1;
-    public static final int CODE_SEARCH_ACTIVITY = 2;
-    public static final int CODE_DETAILS_ACTIVITY = 3;
     private ViewGroup container;
     private SortedSet<Activiteit> activiteiten;
     ApplicationVrijetijdsApp application;
@@ -77,13 +74,13 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
-                case CODE_CREATE_ACTIVITY:
+                case ActivityUtils.CODE_CREATE_ACTIVITY:
                     addActiviteit(readActiviteit(data));
                     break;
-                case CODE_SEARCH_ACTIVITY:
+                case ActivityUtils.CODE_SEARCH_ACTIVITY:
                     loadSelection();
                     break;
-                case CODE_DETAILS_ACTIVITY:
+                case ActivityUtils.CODE_DETAILS_ACTIVITY:
                     loadSelection();
                     break;
                 default:
@@ -139,12 +136,12 @@ public class MainActivity extends Activity {
 
     private void startCreateActivity() {
         Intent intent = new Intent(this, CreateActivity.class);
-        startActivityForResult(intent, CODE_CREATE_ACTIVITY);
+        startActivityForResult(intent, ActivityUtils.CODE_CREATE_ACTIVITY);
     }
 
     private void startFilterActivity() {
         Intent intent = new Intent(this, FilterActivity.class);
-        startActivityForResult(intent, CODE_SEARCH_ACTIVITY);
+        startActivityForResult(intent, ActivityUtils.CODE_SEARCH_ACTIVITY);
     }
 
     private void startDetailsActivity(String activiteitName) {
@@ -153,7 +150,7 @@ public class MainActivity extends Activity {
         }
         Intent intent = new Intent(this, DetailsActivity.class);
         ActivityUtils.storeActivityNameToIntent(intent, activiteitName);
-        startActivityForResult(intent, CODE_DETAILS_ACTIVITY);
+        startActivityForResult(intent, ActivityUtils.CODE_DETAILS_ACTIVITY);
     }
 
     private String getRandomNameFromSelection() {

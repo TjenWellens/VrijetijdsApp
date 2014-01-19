@@ -30,6 +30,10 @@ import java.util.logging.Logger;
  * @author Tjen
  */
 abstract class ActivityUtils {
+    public static final int CODE_CREATE_ACTIVITY = 1;
+    public static final int CODE_SEARCH_ACTIVITY = 2;
+    public static final int CODE_DETAILS_ACTIVITY = 3;
+    public static final int CODE_EDIT_ACTIVITY = 4;
     public static final String ACTIVITEIT_NAME = "activiteit_name";
 
     private static String getName(Activity a) {

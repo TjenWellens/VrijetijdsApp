@@ -20,7 +20,6 @@ import eu.tjenwellens.vrijetijdsapp.properties.PropertyTypeUnknownException;
  * @author Tjen
  */
 public class DetailsActivity extends Activity {
-    public static final int CODE_EDIT_ACTIVITY = 3;
     private Activiteit activiteit;
     private ViewGroup detailsContainer;
 
@@ -88,7 +87,7 @@ public class DetailsActivity extends Activity {
     private void startEditActivity(String activiteitName) {
         Intent intent = new Intent(this, EditActivity.class);
         ActivityUtils.storeActivityNameToIntent(intent, activiteitName);
-        startActivityForResult(intent, CODE_EDIT_ACTIVITY);
+        startActivityForResult(intent, ActivityUtils.CODE_EDIT_ACTIVITY);
     }
 
     /*
@@ -98,7 +97,7 @@ public class DetailsActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
-                case CODE_EDIT_ACTIVITY:
+                case ActivityUtils.CODE_EDIT_ACTIVITY:
                     String oldName = activiteit.getName();
                     String newName = ActivityUtils.getActiviteitNameFromIntent(data);
                     this.activiteit = loadActiviteit(newName);

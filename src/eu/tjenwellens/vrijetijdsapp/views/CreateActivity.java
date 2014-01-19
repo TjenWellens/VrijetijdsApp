@@ -36,11 +36,32 @@ public class CreateActivity extends Activity {
         Activiteit a = ActivityUtils.createActiviteit(this);
         if (a == null) {
             return;
+        } else {
+            Toast.makeText(this, R.string.toast_create_success, Toast.LENGTH_SHORT).show();
         }
-        Intent returnIntent = new Intent();
-        ActivityUtils.storeActivityNameToIntent(returnIntent, a.getName());
-        setResult(RESULT_OK, returnIntent);
-        Toast.makeText(this, R.string.toast_create_success, Toast.LENGTH_SHORT).show();
-        finish();
+        startDetailsActivity(a.getName());
+
+    }
+
+    /*
+     * Handle input from started activities
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ActivityUtils.CODE_DETAILS_ACTIVITY) {
+            Intent returnIntent = new Intent();
+            ActivityUtils.storeActivityNameToIntent(returnIntent, ActivityUtils.getActiviteitNameFromIntent(data));
+            setResult(RESULT_OK, returnIntent);
+            finish();
+        }
+    }
+
+    private void startDetailsActivity(String activiteitName) {
+        if (activiteitName == null) {
+            return;
+        }
+        Intent intent = new Intent(this, DetailsActivity.class);
+        ActivityUtils.storeActivityNameToIntent(intent, activiteitName);
+        startActivityForResult(intent, ActivityUtils.CODE_DETAILS_ACTIVITY);
     }
 }
