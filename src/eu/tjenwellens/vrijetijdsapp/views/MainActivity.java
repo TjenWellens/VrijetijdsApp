@@ -14,8 +14,6 @@ import eu.tjenwellens.vrijetijdsapp.ApplicationVrijetijdsApp;
 import eu.tjenwellens.vrijetijdsapp.R;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class MainActivity extends Activity {
     public static final int CODE_CREATE_ACTIVITY = 1;
@@ -53,7 +51,6 @@ public class MainActivity extends Activity {
 
     private void updateGUI() {
         container.removeAllViews();
-        Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, "Removed views");
         TextView tv;
         for (final Activiteit a : activiteiten) {
             tv = new TextView(this);
@@ -100,7 +97,7 @@ public class MainActivity extends Activity {
     }
 
     private Activiteit readActiviteit(Intent intent) {
-        String name = intent.getStringExtra(ApplicationVrijetijdsApp.ACTIVITEIT_NAME);
+        String name = ActivityUtils.getActiviteitNameFromIntent(intent);
         if (name == null) {
             return null;
         }
@@ -147,7 +144,7 @@ public class MainActivity extends Activity {
 
     private void startDetailsActivity(String activiteitName) {
         Intent intent = new Intent(this, DetailsActivity.class);
-        intent.putExtra(ApplicationVrijetijdsApp.ACTIVITEIT_NAME, activiteitName);
+        ActivityUtils.storeActivityNameToIntent(intent, activiteitName);
         startActivityForResult(intent, CODE_DETAILS_ACTIVITY);
     }
 }

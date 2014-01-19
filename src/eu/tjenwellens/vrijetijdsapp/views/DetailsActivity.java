@@ -31,7 +31,7 @@ public class DetailsActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initGUI();
-        this.activiteit = loadActiviteit(getNameFromIntent());
+        this.activiteit = loadActiviteit(ActivityUtils.getActiviteitNameFromIntent(this.getIntent()));
         updateGUI(activiteit);
     }
 
@@ -51,11 +51,11 @@ public class DetailsActivity extends Activity {
         detailsContainer.addView(createView(a.getName()));
         String text = a.getDescription();
         if (text != null && !text.isEmpty()) {
-            detailsContainer.addView(createView(text));
+            detailsContainer.addView(createView(getString(R.string.description) + ": " + text));
         }
         text = a.getManual();
         if (text != null && !text.isEmpty()) {
-            detailsContainer.addView(createView(text));
+            detailsContainer.addView(createView(getString(R.string.manual) + ": " + text));
         }
         for (Property p : a.getProperties().values()) {
             text = getString(p.getType().getResourceId()) + ": ";
@@ -78,17 +78,13 @@ public class DetailsActivity extends Activity {
         }
     }
 
-    private String getNameFromIntent() {
-        return getIntent().getExtras().getString(ApplicationVrijetijdsApp.ACTIVITEIT_NAME);
-    }
-
     private Activiteit loadActiviteit(String oldName) {
         return ((ApplicationVrijetijdsApp) getApplication()).getData().getActiviteit(oldName);
     }
 
     private void startEditActivity(String activiteitName) {
         Intent intent = new Intent(this, EditActivity.class);
-        intent.putExtra(ApplicationVrijetijdsApp.ACTIVITEIT_NAME, activiteitName);
+        ActivityUtils.storeActivityNameToIntent(intent, activiteitName);
         startActivityForResult(intent, CODE_EDIT_ACTIVITY);
     }
 
@@ -100,10 +96,10 @@ public class DetailsActivity extends Activity {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case CODE_EDIT_ACTIVITY:
-                    String newName = data.getExtras().getString(ApplicationVrijetijdsApp.ACTIVITEIT_NAME);
+                    String newName = ActivityUtils.getActiviteitNameFromIntent(this.getIntent());
                     this.activiteit = loadActiviteit(newName);
                     Intent returnIntent = new Intent();
-                    storeActiviteitNameToIntent(returnIntent, newName);
+                    ActivityUtils.storeActivityNameToIntent(data, newName);
                     setResult(RESULT_OK, returnIntent);
                     // if removed, exit this activity
                     if (activiteit == null) {
@@ -116,10 +112,6 @@ public class DetailsActivity extends Activity {
                 // ignore
             }
         }
-    }
-
-    private void storeActiviteitNameToIntent(Intent intent, String activiteitName) {
-        intent.putExtra(ApplicationVrijetijdsApp.ACTIVITEIT_NAME, activiteitName);
     }
 
     @Override

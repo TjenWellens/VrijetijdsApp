@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
+    
+    <string name="app_name">VrijetijdsApp</string>
+    <string name="loading">Loading&#8230;</string>
+    
+    
+    <string name="name">Naam</string>
+    <string name="description">Beschrijving</string>
+    <string name="manual">Handleiding</string>
+    
     <!-- Property names -->
     <string name="prop_people">Personen</string>
     <string name="prop_location">Plaats</string>
@@ -19,10 +29,6 @@
     <string name="prop_rating_try">Wil ik eens proberen</string>
     <string name="prop_rating_notry">Wil ik niet proberen</string>
     <string name="prop_rating_nofun">Vond ik niet leuk</string>
-    
-    
-    <string name="app_name">VrijetijdsApp</string>
-    <string name="loading">Loading&#8230;</string>
 
     <!-- activity create -->
     <string name="create_hint_name">Naam</string>

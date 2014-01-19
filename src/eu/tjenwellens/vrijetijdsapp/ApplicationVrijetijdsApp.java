@@ -9,7 +9,6 @@ import eu.tjenwellens.vrijetijdsapp.storage.database.DatabaseStorage;
  * @author Tjen
  */
 public class ApplicationVrijetijdsApp extends Application {
-    public static final String ACTIVITEIT_NAME = "activiteit_name";
     private StorageStrategy data;
 
     public StorageStrategy getData() {
