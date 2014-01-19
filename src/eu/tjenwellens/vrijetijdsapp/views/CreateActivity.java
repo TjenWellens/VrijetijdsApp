@@ -112,6 +112,8 @@ public class CreateActivity extends Activity {
                 location = Location.OUTSIDE;
                 break;
             case -1:
+                // ignore
+                break;
             default:
                 Logger.getLogger(FilterActivity.class.toString()).log(Level.SEVERE, "Wrong radiobutton found in plaatsgroup: {0}", findViewById(checkedId));
         }
@@ -129,6 +131,8 @@ public class CreateActivity extends Activity {
                 energy = Energy.CALM;
                 break;
             case -1:
+                // ignore
+                break;
             default:
                 Logger.getLogger(FilterActivity.class.toString()).log(Level.SEVERE, "Wrong radiobutton found in plaatsgroup: {0}", findViewById(checkedId));
         }
@@ -162,6 +166,8 @@ public class CreateActivity extends Activity {
                 rating = Rating.NOT_TRY;
                 break;
             case -1:
+                // ignore
+                break;
             default:
                 Logger.getLogger(FilterActivity.class.toString()).log(Level.SEVERE, "Wrong radiobutton found in plaatsgroup: {0}", findViewById(checkedId));
         }

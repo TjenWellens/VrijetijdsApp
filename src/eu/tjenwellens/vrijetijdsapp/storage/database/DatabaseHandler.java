@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 class DatabaseHandler extends SQLiteOpenHelper {
     private boolean newDatabase = false;
     // Database Version
-    private static final int DATABASE_VERSION = 13;
+    private static final int DATABASE_VERSION = 14;
     // Database Name
     private static final String DATABASE_NAME = "vrijetijdsapp";
     private static final String TABLE_ACTIVITEITEN = "activiteiten";
@@ -516,16 +516,16 @@ class DatabaseHandler extends SQLiteOpenHelper {
 
     private long updateActiviteitValues(SQLiteDatabase db, Activiteit oldActiviteit, String newName, String newDescription, String newManual) {
         long id = getActiviteitId(db, oldActiviteit.getName());
-        ContentValues values = new ContentValues();
         if (differ(oldActiviteit.getName(), newName)) {
-            values.put(KEY_ACTIVITEIT_NAME, newName);
+            // check if new name exists
+            if (getActiviteitId(db, newName) >= 0) {
+                return -1;
+            }
         }
-        if (differ(oldActiviteit.getDescription(), newDescription)) {
-            values.put(KEY_ACTIVITEIT_DESCRIPTION, newDescription);
-        }
-        if (differ(oldActiviteit.getManual(), newManual)) {
-            values.put(KEY_ACTIVITEIT_MANUAL, newManual);
-        }
+        ContentValues values = new ContentValues();
+        values.put(KEY_ACTIVITEIT_NAME, newName);
+        values.put(KEY_ACTIVITEIT_DESCRIPTION, newDescription);
+        values.put(KEY_ACTIVITEIT_MANUAL, newManual);
         db.update(TABLE_ACTIVITEITEN, values, KEY_ACTIVITEIT_ID + " = " + id, null);
         return id;
     }
@@ -538,6 +538,9 @@ class DatabaseHandler extends SQLiteOpenHelper {
     private Activiteit updateActiviteit(SQLiteDatabase db, Activiteit oldActiviteit, String newName, String newDescription, String newManual, Set<Property> newProperties) {
         // activiteit
         long activiteitId = updateActiviteitValues(db, oldActiviteit, newName, newDescription, newManual);
+        if (activiteitId < 0) {
+            return null;
+        }
         // properties
         updateProperties(db, activiteitId, oldActiviteit.getProperties().values(), newProperties);
         return getActiviteitById(db, activiteitId);
