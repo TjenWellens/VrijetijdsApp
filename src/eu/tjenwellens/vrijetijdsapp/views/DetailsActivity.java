@@ -58,7 +58,7 @@ public class DetailsActivity extends Activity {
             detailsContainer.addView(createView(text));
         }
         for (Property p : a.getProperties().values()) {
-            text = getString(p.getType().getResourceId());
+            text = getString(p.getType().getResourceId()) + ": ";
             switch (p.getType()) {
                 case ENERGY:
                 case LOCATION:
@@ -66,7 +66,6 @@ public class DetailsActivity extends Activity {
                 case PRICE:
                 case TAGS:
                 case TIME:
-                    text = getString(R.string.prop_time) + ": ";
                     text += p.toString();
                     break;
                 case RATING:

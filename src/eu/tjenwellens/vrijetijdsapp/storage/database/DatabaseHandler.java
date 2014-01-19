@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 class DatabaseHandler extends SQLiteOpenHelper {
     private boolean newDatabase = false;
     // Database Version
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 11;
     // Database Name
     private static final String DATABASE_NAME = "vrijetijdsapp";
     private static final String TABLE_ACTIVITEITEN = "activiteiten";
@@ -141,6 +141,7 @@ class DatabaseHandler extends SQLiteOpenHelper {
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
         if (newDatabase) {
+            newDatabase = false;
             createDebugEntries(db);
         }
     }
