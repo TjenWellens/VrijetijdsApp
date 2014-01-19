@@ -39,7 +39,7 @@ public class CreateActivity extends Activity {
         } else {
             Toast.makeText(this, R.string.toast_create_success, Toast.LENGTH_SHORT).show();
         }
-        startDetailsActivity(a.getName());
+        ActivityUtils.startDetailsActivity(this, a.getName());
 
     }
 
@@ -54,14 +54,5 @@ public class CreateActivity extends Activity {
             setResult(RESULT_OK, returnIntent);
             finish();
         }
-    }
-
-    private void startDetailsActivity(String activiteitName) {
-        if (activiteitName == null) {
-            return;
-        }
-        Intent intent = new Intent(this, DetailsActivity.class);
-        ActivityUtils.storeActivityNameToIntent(intent, activiteitName);
-        startActivityForResult(intent, ActivityUtils.CODE_DETAILS_ACTIVITY);
     }
 }

@@ -84,12 +84,6 @@ public class DetailsActivity extends Activity {
         return ((ApplicationVrijetijdsApp) getApplication()).getData().getActiviteit(oldName);
     }
 
-    private void startEditActivity(String activiteitName) {
-        Intent intent = new Intent(this, EditActivity.class);
-        ActivityUtils.storeActivityNameToIntent(intent, activiteitName);
-        startActivityForResult(intent, ActivityUtils.CODE_EDIT_ACTIVITY);
-    }
-
     /*
      * Handle input from started activities
      */
@@ -131,7 +125,7 @@ public class DetailsActivity extends Activity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.menu_edit:
-                startEditActivity(activiteit.getName());
+                ActivityUtils.startEditActivity(this, activiteit.getName());
                 return true;
             case R.id.menu_random:
                 nextRandom();

@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 import eu.tjenwellens.vrijetijdsapp.Activiteit;
 import eu.tjenwellens.vrijetijdsapp.ApplicationVrijetijdsApp;
 import eu.tjenwellens.vrijetijdsapp.R;
@@ -64,7 +63,7 @@ public class MainActivity extends Activity {
     }
 
     private void activiteitClicked(Activiteit a) {
-        startDetailsActivity(a.getName());
+        ActivityUtils.startDetailsActivity(this, a.getName());
     }
 
     /*
@@ -114,50 +113,23 @@ public class MainActivity extends Activity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.menu_create:
-                startCreateActivity();
+                ActivityUtils.startCreateActivity(this);
                 return true;
             case R.id.menu_settings:
                 // todo
                 return true;
             case R.id.menu_search:
-                startFilterActivity();
+                ActivityUtils.startFilterActivity(this);
                 return true;
             case R.id.menu_show_all:
                 loadAllActiviteiten();
                 return true;
             case R.id.menu_random:
-                startDetailsActivity(getRandomNameFromSelection());
+                ActivityUtils.startRandomActivity(this);
                 loadAllActiviteiten();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void startCreateActivity() {
-        Intent intent = new Intent(this, CreateActivity.class);
-        startActivityForResult(intent, ActivityUtils.CODE_CREATE_ACTIVITY);
-    }
-
-    private void startFilterActivity() {
-        Intent intent = new Intent(this, FilterActivity.class);
-        startActivityForResult(intent, ActivityUtils.CODE_SEARCH_ACTIVITY);
-    }
-
-    private void startDetailsActivity(String activiteitName) {
-        if (activiteitName == null) {
-            return;
-        }
-        Intent intent = new Intent(this, DetailsActivity.class);
-        ActivityUtils.storeActivityNameToIntent(intent, activiteitName);
-        startActivityForResult(intent, ActivityUtils.CODE_DETAILS_ACTIVITY);
-    }
-
-    private String getRandomNameFromSelection() {
-        String name = ((ApplicationVrijetijdsApp) getApplication()).getData().getRandomNameFromSelection();
-        if (name == null) {
-            Toast.makeText(this, R.string.toast_random_fail, Toast.LENGTH_SHORT).show();
-        }
-        return ((ApplicationVrijetijdsApp) getApplication()).getData().getRandomNameFromSelection();
     }
 }
