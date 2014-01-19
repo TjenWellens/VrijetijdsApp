@@ -11,6 +11,7 @@ import eu.tjenwellens.vrijetijdsapp.ApplicationVrijetijdsApp;
 import eu.tjenwellens.vrijetijdsapp.R;
 import eu.tjenwellens.vrijetijdsapp.properties.Filter;
 import eu.tjenwellens.vrijetijdsapp.properties.PropertyType;
+import eu.tjenwellens.vrijetijdsapp.properties.Rating;
 import eu.tjenwellens.vrijetijdsapp.properties.RatingProperty;
 import java.util.HashSet;
 import java.util.Set;
@@ -139,26 +140,26 @@ public class FilterActivity extends Activity {
         }
         // Rating
         checkedId = rgRating.getCheckedRadioButtonId();
-        int rating = 0;
+        Rating rating = null;
         switch (checkedId) {
             case R.id.rbtnRatingFun:
-                rating = RatingProperty.FUN;
+                rating = Rating.FUN;
                 break;
             case R.id.rbtnRatingNoFun:
-                rating = RatingProperty.NOT_FUN;
+                rating = Rating.NOT_FUN;
                 break;
             case R.id.rbtnRatingTry:
-                rating = RatingProperty.TRY;
+                rating = Rating.TRY;
                 break;
             case R.id.rbtnRatingNoTry:
-                rating = RatingProperty.NOT_TRY;
+                rating = Rating.NOT_TRY;
                 break;
             case -1:
             default:
                 Logger.getLogger(FilterActivity.class.toString()).log(Level.SEVERE, "Wrong radiobutton found in plaatsgroup: {0}", findViewById(checkedId));
         }
-        if (rating != 0) {
-            filters.add(new Filter(PropertyType.RATING, String.valueOf(rating)));
+        if (rating != null) {
+            filters.add(new Filter(PropertyType.RATING, rating.name()));
         }
         return filters;
     }

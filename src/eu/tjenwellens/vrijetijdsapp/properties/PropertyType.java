@@ -37,7 +37,7 @@ public enum PropertyType {
         return new MinMaxProperty(PRICE, min, max);
     }
 
-    public static Property createRatingProperty(int rating) {
+    public static Property createRatingProperty(Rating rating) {
         return new RatingProperty(RATING, rating);
     }
 

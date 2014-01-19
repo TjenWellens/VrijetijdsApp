@@ -58,7 +58,7 @@ public class DetailsActivity extends Activity {
             detailsContainer.addView(createView(text));
         }
         for (Property p : a.getProperties().values()) {
-            text = getString(p.getType().getResourceId())+": ";
+            text = getString(p.getType().getResourceId());
             switch (p.getType()) {
                 case ENERGY:
                 case LOCATION:
@@ -66,25 +66,11 @@ public class DetailsActivity extends Activity {
                 case PRICE:
                 case TAGS:
                 case TIME:
+                    text = getString(R.string.prop_time) + ": ";
                     text += p.toString();
                     break;
                 case RATING:
-                    switch (((RatingProperty) p).getRating()) {
-                        case RatingProperty.FUN:
-                            text += getString(R.string.prop_rating_fun);
-                            break;
-                        case RatingProperty.NOT_FUN:
-                            text += getString(R.string.prop_rating_nofun);
-                            break;
-                        case RatingProperty.NOT_TRY:
-                            text += getString(R.string.prop_rating_notry);
-                            break;
-                        case RatingProperty.TRY:
-                            text += getString(R.string.prop_rating_try);
-                            break;
-                        default:
-                        // ignore
-                    }
+                    text += getString(((RatingProperty) p).getRating().getResourceId());
                     break;
                 default:
                     throw new PropertyTypeUnknownException(p.getType());
