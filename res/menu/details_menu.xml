@@ -5,4 +5,8 @@
         android:id="@+id/menu_edit"
         android:orderInCategory="100"
         android:title="@string/menu_edit"/>
+    <item
+        android:id="@+id/menu_random"
+        android:orderInCategory="100"
+        android:title="@string/menu_random"/>
 </menu>

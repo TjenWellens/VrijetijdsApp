@@ -6,5 +6,6 @@ package eu.tjenwellens.vrijetijdsapp.properties;
  */
 public interface ResourceIdEnum {
     int getResourceId();
+
     String name();
 }

@@ -15,13 +15,15 @@ public interface StorageStrategy {
 
     Activiteit getActiviteit(String name);
 
-    List<Activiteit> getAllActiviteiten();
-
-    List<Activiteit> getLatestSelection();
-
-    List<Activiteit> filterActiviteiten(Set<Filter> filters);
-
     Activiteit updateActiviteit(Activiteit oldActiviteit, String newName, String newDescription, String newManual, Set<Property> newProperties);
 
-    public boolean removeActiviteit(Activiteit oldActiviteit);
+    boolean removeActiviteit(Activiteit oldActiviteit);
+
+    List<Activiteit> selectAllActiviteiten();
+
+    List<Activiteit> selectWithFilters(Set<Filter> filters);
+
+    List<Activiteit> getSelection();
+
+    String getRandomNameFromSelection();
 }

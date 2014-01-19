@@ -25,8 +25,8 @@ public class MultiValueProperty extends GeneralProperty {
     public String toString() {
         return getValue(DEFAULT_SPLITTER);
     }
-    
-    public String getValue(String splitter){
+
+    public String getValue(String splitter) {
         StringBuilder s = new StringBuilder();
         boolean first = true;
         for (String value : values) {

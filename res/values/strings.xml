@@ -114,6 +114,10 @@
     <!-- toast messages -->
     <string name="toast_search_success">Zoeken is gelukt!</string>
     <string name="toast_search_cancel">Zoeken is geannuleerd.</string>
+    
+    <!-- activity main --> 
+    <!--  toast messages -->
+    <string name="toast_random_fail">Er kon geen activeit gevonden worden met de juiste criteria.</string>
 
     <!-- menu -->
     <string name="menu_settings">Instellingen</string>
@@ -121,6 +125,7 @@
     <string name="menu_search">Zoeken</string>
     <string name="menu_show_all">Toon alle</string>
     <string name="menu_edit">Aanpassen</string>
+    <string name="menu_random">Random</string>
     
 	
 </resources>

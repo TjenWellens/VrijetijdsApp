@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import eu.tjenwellens.vrijetijdsapp.Activiteit;
 import eu.tjenwellens.vrijetijdsapp.ApplicationVrijetijdsApp;
 import eu.tjenwellens.vrijetijdsapp.R;
@@ -40,12 +41,12 @@ public class MainActivity extends Activity {
     }
 
     private void loadAllActiviteiten() {
-        activiteiten = new TreeSet<Activiteit>(application.getData().getAllActiviteiten());
+        activiteiten = new TreeSet<Activiteit>(application.getData().selectAllActiviteiten());
         updateGUI();
     }
 
     private void loadSelection() {
-        activiteiten = new TreeSet<Activiteit>(application.getData().getLatestSelection());
+        activiteiten = new TreeSet<Activiteit>(application.getData().getSelection());
         updateGUI();
     }
 
@@ -83,7 +84,7 @@ public class MainActivity extends Activity {
                     loadSelection();
                     break;
                 case CODE_DETAILS_ACTIVITY:
-                    loadAllActiviteiten();
+                    loadSelection();
                     break;
                 default:
                 // ignore
@@ -127,6 +128,10 @@ public class MainActivity extends Activity {
             case R.id.menu_show_all:
                 loadAllActiviteiten();
                 return true;
+            case R.id.menu_random:
+                startDetailsActivity(getRandomNameFromSelection());
+                loadAllActiviteiten();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -143,8 +148,19 @@ public class MainActivity extends Activity {
     }
 
     private void startDetailsActivity(String activiteitName) {
+        if (activiteitName == null) {
+            return;
+        }
         Intent intent = new Intent(this, DetailsActivity.class);
         ActivityUtils.storeActivityNameToIntent(intent, activiteitName);
         startActivityForResult(intent, CODE_DETAILS_ACTIVITY);
+    }
+
+    private String getRandomNameFromSelection() {
+        String name = ((ApplicationVrijetijdsApp) getApplication()).getData().getRandomNameFromSelection();
+        if (name == null) {
+            Toast.makeText(this, R.string.toast_random_fail, Toast.LENGTH_SHORT).show();
+        }
+        return ((ApplicationVrijetijdsApp) getApplication()).getData().getRandomNameFromSelection();
     }
 }

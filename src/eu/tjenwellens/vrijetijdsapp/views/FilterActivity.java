@@ -36,7 +36,7 @@ public class FilterActivity extends Activity {
     }
 
     public void btnSearch(View button) {
-        application.getData().filterActiviteiten(ActivityUtils.createFilters(this));
+        application.getData().selectWithFilters(ActivityUtils.createFilters(this));
         Intent returnIntent = new Intent();
         setResult(RESULT_OK, returnIntent);
         Toast.makeText(this, R.string.toast_search_success, Toast.LENGTH_SHORT).show();

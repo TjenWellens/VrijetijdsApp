@@ -4,7 +4,7 @@ package eu.tjenwellens.vrijetijdsapp.properties;
  *
  * @author Tjen
  */
-public class EnumProperty<T extends ResourceIdEnum> extends GeneralProperty{
+public class EnumProperty<T extends ResourceIdEnum> extends GeneralProperty {
     private T value;
 
     public EnumProperty(PropertyType type, T value) {

@@ -47,6 +47,9 @@ public class DetailsActivity extends Activity {
     }
 
     private void updateGUI(Activiteit a) {
+        if (a == null) {
+            finish();
+        }
         detailsContainer.removeAllViews();
         detailsContainer.addView(createView(a.getName()));
         String text = a.getDescription();
@@ -96,11 +99,14 @@ public class DetailsActivity extends Activity {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case CODE_EDIT_ACTIVITY:
-                    String newName = ActivityUtils.getActiviteitNameFromIntent(this.getIntent());
+                    String oldName = activiteit.getName();
+                    String newName = ActivityUtils.getActiviteitNameFromIntent(data);
                     this.activiteit = loadActiviteit(newName);
-                    Intent returnIntent = new Intent();
-                    ActivityUtils.storeActivityNameToIntent(data, newName);
-                    setResult(RESULT_OK, returnIntent);
+                    if (activiteit == null || !oldName.equals(newName)) {
+                        Intent returnIntent = new Intent();
+                        ActivityUtils.storeActivityNameToIntent(data, newName);
+                        setResult(RESULT_OK, returnIntent);
+                    }
                     // if removed, exit this activity
                     if (activiteit == null) {
                         finish();
@@ -128,8 +134,16 @@ public class DetailsActivity extends Activity {
             case R.id.menu_edit:
                 startEditActivity(activiteit.getName());
                 return true;
+            case R.id.menu_random:
+                nextRandom();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void nextRandom() {
+        this.activiteit = loadActiviteit(((ApplicationVrijetijdsApp) getApplication()).getData().getRandomNameFromSelection());
+        updateGUI(activiteit);
     }
 }
