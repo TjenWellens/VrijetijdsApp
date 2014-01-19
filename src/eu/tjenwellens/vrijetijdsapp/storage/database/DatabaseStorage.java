@@ -4,6 +4,7 @@ import android.content.Context;
 import eu.tjenwellens.vrijetijdsapp.Activiteit;
 import eu.tjenwellens.vrijetijdsapp.properties.Filter;
 import eu.tjenwellens.vrijetijdsapp.properties.Property;
+import eu.tjenwellens.vrijetijdsapp.properties.Rating;
 import eu.tjenwellens.vrijetijdsapp.storage.StorageStrategy;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,5 +76,9 @@ public class DatabaseStorage implements StorageStrategy {
 
     private int random(int max) {
         return new Random().nextInt(max);
+    }
+
+    public boolean updateRating(Activiteit activiteit, Rating newRating) {
+        return dbh.updateRating(activiteit, newRating);
     }
 }

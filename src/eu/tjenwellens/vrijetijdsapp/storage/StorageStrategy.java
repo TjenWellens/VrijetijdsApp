@@ -3,6 +3,7 @@ package eu.tjenwellens.vrijetijdsapp.storage;
 import eu.tjenwellens.vrijetijdsapp.Activiteit;
 import eu.tjenwellens.vrijetijdsapp.properties.Filter;
 import eu.tjenwellens.vrijetijdsapp.properties.Property;
+import eu.tjenwellens.vrijetijdsapp.properties.Rating;
 import java.util.List;
 import java.util.Set;
 
@@ -26,4 +27,6 @@ public interface StorageStrategy {
     List<Activiteit> getSelection();
 
     String getRandomNameFromSelection();
+
+    boolean updateRating(Activiteit activiteit, Rating newRating);
 }

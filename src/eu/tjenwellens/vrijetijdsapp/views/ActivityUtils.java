@@ -2,6 +2,7 @@ package eu.tjenwellens.vrijetijdsapp.views;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -34,6 +35,7 @@ abstract class ActivityUtils {
     public static final int CODE_SEARCH_ACTIVITY = 2;
     public static final int CODE_DETAILS_ACTIVITY = 3;
     public static final int CODE_EDIT_ACTIVITY = 4;
+    public static final int CODE_LIKE_ACTIVITY = 4;
     public static final String ACTIVITEIT_NAME = "activiteit_name";
 
     public static Activiteit createActiviteit(Activity activity) {
@@ -65,7 +67,14 @@ abstract class ActivityUtils {
     }
 
     public static String getActiviteitNameFromIntent(Intent intent) {
-        return intent.getExtras().getString(ACTIVITEIT_NAME);
+        if (intent == null) {
+            return null;
+        }
+        Bundle extras = intent.getExtras();
+        if (extras == null) {
+            return null;
+        }
+        return extras.getString(ACTIVITEIT_NAME);
     }
 
     public static Activiteit updateActiviteit(Activity activity, Activiteit oldActiviteit) {
@@ -114,7 +123,7 @@ abstract class ActivityUtils {
     }
 
     public static void startRandomActivity(Activity activity) {
-        startDetailsActivity(activity, getRandomNameFromSelection(activity));
+        startDetailsActivity(activity, Extras.getRandomNameFromSelection(activity));
     }
 
     public static void startEditActivity(Activity activity, String activiteitName) {
@@ -123,29 +132,36 @@ abstract class ActivityUtils {
         activity.startActivityForResult(intent, CODE_EDIT_ACTIVITY);
     }
 
-    //<editor-fold defaultstate="collapsed" desc="private functions (bundled in classes)">
-    private static String getRandomNameFromSelection(Activity activity) {
-        String name = ((ApplicationVrijetijdsApp) activity.getApplication()).getData().getRandomNameFromSelection();
-        if (name == null) {
-            Toast.makeText(activity, R.string.toast_random_fail, Toast.LENGTH_SHORT).show();
-        }
-        return name;
+    public static void startLikeActivity(Activity activity) {
+        Intent intent = new Intent(activity, LikeActivity.class);
+        activity.startActivityForResult(intent, CODE_LIKE_ACTIVITY);
     }
 
-    private static class Properties {
-        private static String getName(Activity a) {
+    //<editor-fold defaultstate="collapsed" desc="less important functions bundled in subclasses">
+    public static class Extras {
+        public static String getRandomNameFromSelection(Activity activity) {
+            String name = ((ApplicationVrijetijdsApp) activity.getApplication()).getData().getRandomNameFromSelection();
+            if (name == null) {
+                Toast.makeText(activity, R.string.toast_random_fail, Toast.LENGTH_SHORT).show();
+            }
+            return name;
+        }
+    }
+
+    public static class Properties {
+        public static String getName(Activity a) {
             return ((EditText) a.findViewById(R.id.txtName)).getText().toString().trim();
         }
 
-        private static String getDescription(Activity a) {
+        public static String getDescription(Activity a) {
             return ((EditText) a.findViewById(R.id.txtDescription)).getText().toString().trim();
         }
 
-        private static String getManual(Activity a) {
+        public static String getManual(Activity a) {
             return ((EditText) a.findViewById(R.id.txtManual)).getText().toString().trim();
         }
 
-        private static void addProperties(Activity a, Collection<Property> properties) {
+        public static void addProperties(Activity a, Collection<Property> properties) {
             properties.add(getPeopleProperty(a));
             properties.add(getPriceProperty(a));
             properties.add(getTimeProperty(a));
@@ -157,7 +173,7 @@ abstract class ActivityUtils {
             }
         }
 
-        private static Property getPeopleProperty(Activity a) {
+        public static Property getPeopleProperty(Activity a) {
             Property p = null;
             String minPers = ((EditText) a.findViewById(R.id.txtPersonenMin)).getText().toString().trim();
             String maxPers = ((EditText) a.findViewById(R.id.txtPersonenMax)).getText().toString().trim();
@@ -169,7 +185,7 @@ abstract class ActivityUtils {
             return p;
         }
 
-        private static Property getPriceProperty(Activity a) {
+        public static Property getPriceProperty(Activity a) {
             Property p = null;
             String minPrijs = ((EditText) a.findViewById(R.id.txtPrijsMin)).getText().toString().trim();
             String maxPrijs = ((EditText) a.findViewById(R.id.txtPrijsMax)).getText().toString().trim();
@@ -181,7 +197,7 @@ abstract class ActivityUtils {
             return p;
         }
 
-        private static Property getTimeProperty(Activity a) {
+        public static Property getTimeProperty(Activity a) {
             Property p = null;
             String minTijd = ((EditText) a.findViewById(R.id.txtTijdMin)).getText().toString().trim();
             String maxTijd = ((EditText) a.findViewById(R.id.txtTijdMax)).getText().toString().trim();
@@ -193,7 +209,7 @@ abstract class ActivityUtils {
             return p;
         }
 
-        private static Property getPlaceProperty(Activity a) {
+        public static Property getPlaceProperty(Activity a) {
             Property p = null;
             int checkedId = ((RadioGroup) a.findViewById(R.id.rgPlaats)).getCheckedRadioButtonId();
             Location location = null;
@@ -216,7 +232,7 @@ abstract class ActivityUtils {
             return p;
         }
 
-        private static Property getEnergyProperty(Activity a) {
+        public static Property getEnergyProperty(Activity a) {
             Property p = null;
             int checkedId = ((RadioGroup) a.findViewById(R.id.rgEnergie)).getCheckedRadioButtonId();
             Energy energy = null;
@@ -239,7 +255,7 @@ abstract class ActivityUtils {
             return p;
         }
 
-        private static Property getTagsProperty(Activity a) {
+        public static Property getTagsProperty(Activity a) {
             Property p = null;
             String tagText = ((EditText) a.findViewById(R.id.txtTags)).getText().toString().trim();
             if (!tagText.isEmpty()) {
@@ -253,10 +269,18 @@ abstract class ActivityUtils {
             return p;
         }
 
-        private static Property getRatingProperty(Activity a) {
+        public static Property getRatingProperty(Activity a) {
             Property p = null;
-            int checkedId = ((RadioGroup) a.findViewById(R.id.rgRating)).getCheckedRadioButtonId();
+            Rating rating = getRating(a);
+            if (rating != null) {
+                p = PropertyType.createRatingProperty(rating);
+            }
+            return p;
+        }
+
+        public static Rating getRating(Activity a) {
             Rating rating = null;
+            int checkedId = ((RadioGroup) a.findViewById(R.id.rgRating)).getCheckedRadioButtonId();
             switch (checkedId) {
                 case R.id.rbtnRatingFun:
                     rating = Rating.FUN;
@@ -271,20 +295,16 @@ abstract class ActivityUtils {
                     rating = Rating.NOT_TRY;
                     break;
                 case -1:
-                    // ignore
-                    break;
+                    return null;
                 default:
                     Logger.getLogger(FilterActivity.class.toString()).log(Level.SEVERE, "Wrong radiobutton found in plaatsgroup: {0}", a.findViewById(checkedId));
             }
-            if (rating != null) {
-                p = PropertyType.createRatingProperty(rating);
-            }
-            return p;
+            return rating;
         }
     }
 
-    private static class Filters {
-        private static void addFilters(Activity a, Collection<Filter> filters) {
+    public static class Filters {
+        public static void addFilters(Activity a, Collection<Filter> filters) {
             filters.add(getPeopleFilter(a));
             filters.add(getPriceFilter(a));
             filters.add(getTimeFilter(a));
@@ -296,7 +316,7 @@ abstract class ActivityUtils {
             }
         }
 
-        private static Filter getPeopleFilter(Activity a) {
+        public static Filter getPeopleFilter(Activity a) {
             Filter f = null;
             String valueString = ((EditText) a.findViewById(R.id.txtPersonen)).getText().toString().trim();
             if (!valueString.isEmpty()) {
@@ -306,7 +326,7 @@ abstract class ActivityUtils {
             return f;
         }
 
-        private static Filter getPriceFilter(Activity a) {
+        public static Filter getPriceFilter(Activity a) {
             Filter f = null;
             String valueString = ((EditText) a.findViewById(R.id.txtPrijs)).getText().toString().trim();
             if (!valueString.isEmpty()) {
@@ -316,7 +336,7 @@ abstract class ActivityUtils {
             return f;
         }
 
-        private static Filter getTimeFilter(Activity a) {
+        public static Filter getTimeFilter(Activity a) {
             Filter f = null;
             String valueString = ((EditText) a.findViewById(R.id.txtTijd)).getText().toString().trim();
             if (!valueString.isEmpty()) {
@@ -326,7 +346,7 @@ abstract class ActivityUtils {
             return f;
         }
 
-        private static Filter getPlaceFilter(Activity a) {
+        public static Filter getPlaceFilter(Activity a) {
             Filter f = null;
             int checkedId = ((RadioGroup) a.findViewById(R.id.rgPlaats)).getCheckedRadioButtonId();
             Location location = null;
@@ -349,7 +369,7 @@ abstract class ActivityUtils {
             return f;
         }
 
-        private static Filter getEnergyFilter(Activity a) {
+        public static Filter getEnergyFilter(Activity a) {
             Filter f = null;
             int checkedId = ((RadioGroup) a.findViewById(R.id.rgEnergie)).getCheckedRadioButtonId();
             Energy energy = null;
@@ -372,7 +392,7 @@ abstract class ActivityUtils {
             return f;
         }
 
-        private static Filter getTagsFilter(Activity a) {
+        public static Filter getTagsFilter(Activity a) {
             Filter f = null;
             String tagText = ((EditText) a.findViewById(R.id.txtTags)).getText().toString().trim();
             if (!tagText.isEmpty()) {
@@ -386,7 +406,7 @@ abstract class ActivityUtils {
             return f;
         }
 
-        private static Filter getRatingFilter(Activity a) {
+        public static Filter getRatingFilter(Activity a) {
             Filter f = null;
             int checkedId = ((RadioGroup) a.findViewById(R.id.rgRating)).getCheckedRadioButtonId();
             Rating rating = null;
@@ -416,20 +436,20 @@ abstract class ActivityUtils {
         }
     }
 
-    private static class UpdateGUI {
-        private static void setName(Activity a, String name) {
+    public static class UpdateGUI {
+        public static void setName(Activity a, String name) {
             ((EditText) a.findViewById(R.id.txtName)).setText(name);
         }
 
-        private static void setDescription(Activity a, String description) {
+        public static void setDescription(Activity a, String description) {
             ((EditText) a.findViewById(R.id.txtDescription)).setText(description);
         }
 
-        private static void setManual(Activity a, String manual) {
+        public static void setManual(Activity a, String manual) {
             ((EditText) a.findViewById(R.id.txtManual)).setText(manual);
         }
 
-        private static void setProperties(Activity a, Collection<Property> properties) {
+        public static void setProperties(Activity a, Collection<Property> properties) {
             for (Property property : properties) {
                 switch (property.getType()) {
                     case ENERGY:
@@ -469,7 +489,7 @@ abstract class ActivityUtils {
             }
         }
 
-        private static void setEnergy(Activity a, Energy energy) {
+        public static void setEnergy(Activity a, Energy energy) {
             switch (energy) {
                 case ACTIVE:
                     ((RadioButton) a.findViewById(R.id.rbtnEnergieActief)).setChecked(true);
@@ -480,7 +500,7 @@ abstract class ActivityUtils {
             }
         }
 
-        private static void setLocation(Activity a, Location location) {
+        public static void setLocation(Activity a, Location location) {
             switch (location) {
                 case INSIDE:
                     ((RadioButton) a.findViewById(R.id.rbtnPlaatsBinnen)).setChecked(true);
@@ -491,22 +511,22 @@ abstract class ActivityUtils {
             }
         }
 
-        private static void setTime(Activity a, int minTime, int maxTime) {
+        public static void setTime(Activity a, int minTime, int maxTime) {
             ((EditText) a.findViewById(R.id.txtTijdMin)).setText(String.valueOf(minTime));
             ((EditText) a.findViewById(R.id.txtTijdMax)).setText(String.valueOf(maxTime));
         }
 
-        private static void setPeople(Activity a, int minPpl, int maxPpl) {
+        public static void setPeople(Activity a, int minPpl, int maxPpl) {
             ((EditText) a.findViewById(R.id.txtPersonenMin)).setText(String.valueOf(minPpl));
             ((EditText) a.findViewById(R.id.txtPersonenMax)).setText(String.valueOf(maxPpl));
         }
 
-        private static void setPrice(Activity a, int minPrice, int maxPrice) {
+        public static void setPrice(Activity a, int minPrice, int maxPrice) {
             ((EditText) a.findViewById(R.id.txtPrijsMin)).setText(String.valueOf(minPrice));
             ((EditText) a.findViewById(R.id.txtPrijsMax)).setText(String.valueOf(maxPrice));
         }
 
-        private static void setRating(Activity a, Rating rating) {
+        public static void setRating(Activity a, Rating rating) {
             switch (rating) {
                 case FUN:
                     ((RadioButton) a.findViewById(R.id.rbtnRatingFun)).setChecked(true);
@@ -523,7 +543,7 @@ abstract class ActivityUtils {
             }
         }
 
-        private static void setTags(Activity a, String tags) {
+        public static void setTags(Activity a, String tags) {
             ((EditText) a.findViewById(R.id.txtTags)).setTag(tags);
         }
     }

@@ -13,6 +13,8 @@ import eu.tjenwellens.vrijetijdsapp.R;
  * @author Tjen
  */
 public class CreateActivity extends Activity {
+    private Activiteit created = null;
+
     /**
      * Called when the activity is first created.
      */
@@ -33,13 +35,13 @@ public class CreateActivity extends Activity {
     }
 
     public void btnCreate(View button) {
-        Activiteit a = ActivityUtils.createActiviteit(this);
-        if (a == null) {
+        created = ActivityUtils.createActiviteit(this);
+        if (created == null) {
             return;
         } else {
             Toast.makeText(this, R.string.toast_create_success, Toast.LENGTH_SHORT).show();
         }
-        ActivityUtils.startDetailsActivity(this, a.getName());
+        ActivityUtils.startDetailsActivity(this, created.getName());
 
     }
 
@@ -50,7 +52,13 @@ public class CreateActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ActivityUtils.CODE_DETAILS_ACTIVITY) {
             Intent returnIntent = new Intent();
-            ActivityUtils.storeActivityNameToIntent(returnIntent, ActivityUtils.getActiviteitNameFromIntent(data));
+            String name = ActivityUtils.getActiviteitNameFromIntent(data);
+            if (name == null && created != null) {
+                name = created.getName();
+            }
+            if (name != null) {
+                ActivityUtils.storeActivityNameToIntent(returnIntent, name);
+            }
             setResult(RESULT_OK, returnIntent);
             finish();
         }

@@ -21,4 +21,8 @@
         android:id="@+id/menu_random"
         android:orderInCategory="100"
         android:title="@string/menu_random"/>
+    <item
+        android:id="@+id/menu_like"
+        android:orderInCategory="100"
+        android:title="@string/menu_like"/>
 </menu>

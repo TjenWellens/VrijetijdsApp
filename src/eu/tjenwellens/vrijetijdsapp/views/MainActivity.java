@@ -82,6 +82,9 @@ public class MainActivity extends Activity {
                 case ActivityUtils.CODE_DETAILS_ACTIVITY:
                     loadSelection();
                     break;
+                case ActivityUtils.CODE_LIKE_ACTIVITY:
+                    loadAllActiviteiten();
+                    break;
                 default:
                 // ignore
             }
@@ -89,6 +92,9 @@ public class MainActivity extends Activity {
     }
 
     private void addActiviteit(Activiteit a) {
+        if (a == null) {
+            return;
+        }
         activiteiten.add(a);
         updateGUI();
     }
@@ -126,6 +132,10 @@ public class MainActivity extends Activity {
                 return true;
             case R.id.menu_random:
                 ActivityUtils.startRandomActivity(this);
+//                loadAllActiviteiten();
+                return true;
+            case R.id.menu_like:
+                ActivityUtils.startLikeActivity(this);
                 loadAllActiviteiten();
                 return true;
             default:

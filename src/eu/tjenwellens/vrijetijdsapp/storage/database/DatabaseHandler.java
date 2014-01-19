@@ -592,6 +592,29 @@ class DatabaseHandler extends SQLiteOpenHelper {
     private boolean removeActiviteitValues(SQLiteDatabase db, long id) {
         return db.delete(TABLE_ACTIVITEITEN, KEY_ACTIVITEIT_ID + " = " + id, null) > 0;
     }
+
+    public boolean updateRating(Activiteit activiteit, Rating newRating) {
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+            return updateRating(db, activiteit, newRating);
+        } finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+    }
+
+    private boolean updateRating(SQLiteDatabase db, Activiteit activiteit, Rating newRating) {
+        long id = getActiviteitId(db, activiteit.getName());
+        Property oldProp = activiteit.getProperties().get(PropertyType.RATING);
+        Property newProp = PropertyType.createRatingProperty(newRating);
+        if (oldProp != null) {
+            removeProperty(db, oldProp, id);
+        }
+        long propId = addProperty(db, newProp, id);
+        return propId > 0;
+    }
 //    // Getting contacts Count
 //    public int getActiviteitenCount() {
 //        String countQuery = "SELECT  * FROM " + TABLE_ACTIVITEITEN;

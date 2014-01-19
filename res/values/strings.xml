@@ -118,6 +118,16 @@
     <!-- activity main --> 
     <!--  toast messages -->
     <string name="toast_random_fail">Er kon geen activeit gevonden worden met de juiste criteria.</string>
+    
+    <!-- activity like -->
+    <string name="like_btn_fun">Vond ik leuk</string>
+    <string name="like_btn_try">Wil ik eens proberen</string>
+    <string name="like_btn_notry">Wil ik niet proberen</string>
+    <string name="like_btn_nofun">Vond ik niet leuk</string>
+    <string name="like_btn_previous">Previous</string>
+    <string name="like_btn_next">Next</string>
+    <!-- toast messages -->
+    <string name="toast_like_empty_selection">Er konden geen activiteiten zonder beoordeling gevonden worden.</string>
 
     <!-- menu -->
     <string name="menu_settings">Instellingen</string>
@@ -126,6 +136,7 @@
     <string name="menu_show_all">Toon alle</string>
     <string name="menu_edit">Aanpassen</string>
     <string name="menu_random">Random</string>
+    <string name="menu_like">Beoordeel</string>
     
 	
 </resources>
