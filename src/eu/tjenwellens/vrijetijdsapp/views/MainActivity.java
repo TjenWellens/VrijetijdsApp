@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 import eu.tjenwellens.vrijetijdsapp.Activiteit;
 import eu.tjenwellens.vrijetijdsapp.ApplicationVrijetijdsApp;
 import eu.tjenwellens.vrijetijdsapp.R;
@@ -21,7 +20,7 @@ import java.util.logging.Logger;
 public class MainActivity extends Activity {
     public static final int CODE_CREATE_ACTIVITY = 1;
     public static final int CODE_SEARCH_ACTIVITY = 2;
-    public static final int CODE_EDIT_ACTIVITY = 3;
+    public static final int CODE_DETAILS_ACTIVITY = 3;
     private ViewGroup container;
     private SortedSet<Activiteit> activiteiten;
     ApplicationVrijetijdsApp application;
@@ -70,7 +69,7 @@ public class MainActivity extends Activity {
     }
 
     private void activiteitClicked(Activiteit a) {
-        startEditActivity(a.getName());
+        startDetailsActivity(a.getName());
     }
 
     /*
@@ -86,7 +85,7 @@ public class MainActivity extends Activity {
                 case CODE_SEARCH_ACTIVITY:
                     loadSelection();
                     break;
-                case CODE_EDIT_ACTIVITY:
+                case CODE_DETAILS_ACTIVITY:
                     loadAllActiviteiten();
                     break;
                 default:
@@ -146,9 +145,9 @@ public class MainActivity extends Activity {
         startActivityForResult(intent, CODE_SEARCH_ACTIVITY);
     }
 
-    private void startEditActivity(String activiteitName) {
-        Intent intent = new Intent(this, EditActivity.class);
+    private void startDetailsActivity(String activiteitName) {
+        Intent intent = new Intent(this, DetailsActivity.class);
         intent.putExtra(ApplicationVrijetijdsApp.ACTIVITEIT_NAME, activiteitName);
-        startActivityForResult(intent, CODE_EDIT_ACTIVITY);
+        startActivityForResult(intent, CODE_DETAILS_ACTIVITY);
     }
 }
