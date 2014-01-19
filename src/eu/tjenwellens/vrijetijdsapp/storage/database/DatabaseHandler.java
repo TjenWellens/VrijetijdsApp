@@ -62,10 +62,10 @@ class DatabaseHandler extends SQLiteOpenHelper {
         linkActProp(acts, "Time 10-100", PropertyType.createTimeProperty(10, 100));
         linkActProp(acts, "Time 0-50", PropertyType.createTimeProperty(0, 50));
 
-        linkActProp(acts, "Rating -10", PropertyType.createRatingProperty(-10));
-        linkActProp(acts, "Rating -5", PropertyType.createRatingProperty(-5));
-        linkActProp(acts, "Rating 5", PropertyType.createRatingProperty(5));
-        linkActProp(acts, "Rating 10", PropertyType.createRatingProperty(10));
+        linkActProp(acts, "Rating -10", PropertyType.createRatingProperty(Rating.FUN));
+        linkActProp(acts, "Rating -5", PropertyType.createRatingProperty(Rating.NOT_FUN));
+        linkActProp(acts, "Rating 5", PropertyType.createRatingProperty(Rating.NOT_TRY));
+        linkActProp(acts, "Rating 10", PropertyType.createRatingProperty(Rating.TRY));
 
         Set<String> tags = new HashSet<String>();
         tags.add("a");
@@ -108,7 +108,7 @@ class DatabaseHandler extends SQLiteOpenHelper {
                 create.append(',').append(KEY_PROPERTY_MAX).append(" INTEGER");
                 break;
             case RATING:
-                create.append(',').append(KEY_PROPERTY_RATING).append(" INTEGER");
+                create.append(',').append(KEY_PROPERTY_RATING).append(" TEXT");
                 break;
             default:
                 throw new PropertyTypeUnknownException(type);
@@ -248,7 +248,7 @@ class DatabaseHandler extends SQLiteOpenHelper {
                 values.put(KEY_PROPERTY_MAX, ((MinMaxProperty) property).getMax());
                 break;
             case RATING:
-                values.put(KEY_PROPERTY_RATING, ((RatingProperty) property).getRating());
+                values.put(KEY_PROPERTY_RATING, ((RatingProperty) property).getRating().name());
                 break;
             case TAGS:
                 for (String value : ((MultiValueProperty) property).getValues()) {
@@ -319,7 +319,7 @@ class DatabaseHandler extends SQLiteOpenHelper {
                     property = PropertyType.createPriceProperty(cursor.getInt(cursor.getColumnIndex(KEY_PROPERTY_MIN)), cursor.getInt(cursor.getColumnIndex(KEY_PROPERTY_MAX)));
                     break;
                 case RATING:
-                    property = PropertyType.createRatingProperty(cursor.getInt(cursor.getColumnIndex(KEY_PROPERTY_RATING)));
+                    property = PropertyType.createRatingProperty(Rating.valueOf(cursor.getString(cursor.getColumnIndex(KEY_PROPERTY_RATING))));
                     break;
                 case TAGS:
                     LinkedList<String> values = new LinkedList<String>();

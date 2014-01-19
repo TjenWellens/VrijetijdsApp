@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <!-- Property names -->
+    <string name="prop_people">Personen</string>
+    <string name="prop_location">Plaats</string>
+    <string name="prop_energy">Energie</string>
+    <string name="prop_price">Prijs</string>
+    <string name="prop_time">Tijdsduur</string>
+    <string name="prop_tags">Tags</string>
+    <string name="prop_rating">Beoordeling</string>
+    <!--energy-->
+    <string name="prop_energy_rustig">Rustig</string>
+    <string name="prop_energy_actief">Actief</string>
+    <!--location-->
+    <string name="prop_location_binnen">Binnen</string>
+    <string name="prop_location_buiten">Buiten</string>
+    <!--rating-->
+    <string name="prop_rating_fun">Vond ik leuk</string>
+    <string name="prop_rating_try">Wil ik eens proberen</string>
+    <string name="prop_rating_notry">Wil ik niet proberen</string>
+    <string name="prop_rating_nofun">Vond ik niet leuk</string>
+    
+    
     <string name="app_name">VrijetijdsApp</string>
     <string name="loading">Loading&#8230;</string>
 
@@ -94,6 +114,7 @@
     <string name="menu_create">Nieuw maken</string>
     <string name="menu_search">Zoeken</string>
     <string name="menu_show_all">Toon alle</string>
+    <string name="menu_edit">Aanpassen</string>
     
 	
 </resources>

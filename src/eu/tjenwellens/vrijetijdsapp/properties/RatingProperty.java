@@ -5,18 +5,14 @@ package eu.tjenwellens.vrijetijdsapp.properties;
  * @author Tjen
  */
 public class RatingProperty extends GeneralProperty {
-    public static final int FUN = 10;
-    public static final int TRY = 5;
-    public static final int NOT_TRY = -5;
-    public static final int NOT_FUN = -10;
-    private int rating;
+    private Rating rating;
 
-    RatingProperty(PropertyType type, int rating) {
+    RatingProperty(PropertyType type, Rating rating) {
         super(type);
         this.rating = rating;
     }
 
-    public int getRating() {
+    public Rating getRating() {
         return rating;
     }
 

@@ -11,12 +11,12 @@ import android.widget.Toast;
 import eu.tjenwellens.vrijetijdsapp.Activiteit;
 import eu.tjenwellens.vrijetijdsapp.ApplicationVrijetijdsApp;
 import eu.tjenwellens.vrijetijdsapp.R;
-import eu.tjenwellens.vrijetijdsapp.properties.Filter;
 import eu.tjenwellens.vrijetijdsapp.properties.MinMaxProperty;
 import eu.tjenwellens.vrijetijdsapp.properties.MultiValueProperty;
 import eu.tjenwellens.vrijetijdsapp.properties.Property;
 import eu.tjenwellens.vrijetijdsapp.properties.PropertyType;
 import eu.tjenwellens.vrijetijdsapp.properties.PropertyTypeUnknownException;
+import eu.tjenwellens.vrijetijdsapp.properties.Rating;
 import eu.tjenwellens.vrijetijdsapp.properties.RatingProperty;
 import eu.tjenwellens.vrijetijdsapp.properties.SingleValueProperty;
 import java.util.HashSet;
@@ -132,18 +132,18 @@ public class EditActivity extends Activity {
                     txtPrijsMax.setText(String.valueOf(maxPrice));
                     break;
                 case RATING:
-                    int rating = ((RatingProperty) property).getRating();
+                    Rating rating = ((RatingProperty) property).getRating();
                     switch (rating) {
-                        case RatingProperty.FUN:
+                        case FUN:
                             rbtnRatingFun.setChecked(true);
                             break;
-                        case RatingProperty.NOT_FUN:
+                        case NOT_FUN:
                             rbtnRatingNoFun.setChecked(true);
                             break;
-                        case RatingProperty.NOT_TRY:
+                        case NOT_TRY:
                             rbtnRatingNoTry.setChecked(true);
                             break;
-                        case RatingProperty.TRY:
+                        case TRY:
                             rbtnRatingTry.setChecked(true);
                             break;
                     }
@@ -234,25 +234,25 @@ public class EditActivity extends Activity {
         }
         // Rating
         checkedId = rgRating.getCheckedRadioButtonId();
-        int rating = 0;
+        Rating rating = null;
         switch (checkedId) {
             case R.id.rbtnRatingFun:
-                rating = RatingProperty.FUN;
+                rating = Rating.FUN;
                 break;
             case R.id.rbtnRatingNoFun:
-                rating = RatingProperty.NOT_FUN;
+                rating = Rating.NOT_FUN;
                 break;
             case R.id.rbtnRatingTry:
-                rating = RatingProperty.TRY;
+                rating = Rating.TRY;
                 break;
             case R.id.rbtnRatingNoTry:
-                rating = RatingProperty.NOT_TRY;
+                rating = Rating.NOT_TRY;
                 break;
             case -1:
             default:
                 Logger.getLogger(FilterActivity.class.toString()).log(Level.SEVERE, "Wrong radiobutton found in plaatsgroup: {0}", findViewById(checkedId));
         }
-        if (rating != 0) {
+        if (rating != null) {
             newProperties.add(PropertyType.createRatingProperty(rating));
         }
         // Create activiteit
