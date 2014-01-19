@@ -4,20 +4,20 @@ package eu.tjenwellens.vrijetijdsapp.properties;
  *
  * @author Tjen
  */
-public class SingleValueProperty extends GeneralProperty {
-    private String value;
+public class EnumProperty<T extends ResourceIdEnum> extends GeneralProperty{
+    private T value;
 
-    SingleValueProperty(PropertyType type, String value) {
+    public EnumProperty(PropertyType type, T value) {
         super(type);
         this.value = value;
     }
 
-    public String getValue() {
+    public T getValue() {
         return value;
     }
 
     @Override
     public String toString() {
-        return value;
+        return value.toString();
     }
 }

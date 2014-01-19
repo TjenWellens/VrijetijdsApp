@@ -6,11 +6,11 @@ import eu.tjenwellens.vrijetijdsapp.R;
  *
  * @author Tjen
  */
-public enum Rating implements ResourceIdEnum {
-    FUN(R.string.prop_rating_fun), TRY(R.string.prop_rating_try), NOT_TRY(R.string.prop_rating_notry), NOT_FUN(R.string.prop_rating_nofun);
+public enum Energy implements ResourceIdEnum {
+    ACTIVE(R.string.prop_energy_actief), CALM(R.string.prop_energy_rustig);
     private int resourceId;
 
-    private Rating(int resourceId) {
+    private Energy(int resourceId) {
         this.resourceId = resourceId;
     }
 

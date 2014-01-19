@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 class DatabaseHandler extends SQLiteOpenHelper {
     private boolean newDatabase = false;
     // Database Version
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 13;
     // Database Name
     private static final String DATABASE_NAME = "vrijetijdsapp";
     private static final String TABLE_ACTIVITEITEN = "activiteiten";
@@ -33,7 +33,6 @@ class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_PROPERTY_VALUE = "prop_value";
     private static final String KEY_PROPERTY_MIN = "prop_min";
     private static final String KEY_PROPERTY_MAX = "prop_max";
-    private static final String KEY_PROPERTY_RATING = "prop_rating";
     private static final Map<PropertyType, String> PROPERTY_TABLES = new EnumMap<PropertyType, String>(PropertyType.class);
     // Create tables
     private static final String CREATE_ACTIVITEITEN_TABLE = "CREATE TABLE " + TABLE_ACTIVITEITEN + "("
@@ -44,11 +43,11 @@ class DatabaseHandler extends SQLiteOpenHelper {
 
     private void createDebugEntries(SQLiteDatabase db) {
         List<Activiteit> acts = new LinkedList<Activiteit>();
-        linkActProp(acts, "Actief", PropertyType.createEnergyProperty("actief"));
-        linkActProp(acts, "Rustig", PropertyType.createEnergyProperty("rustig"));
+        linkActProp(acts, "Actief", PropertyType.createEnergyProperty(Energy.ACTIVE));
+        linkActProp(acts, "Rustig", PropertyType.createEnergyProperty(Energy.CALM));
 
-        linkActProp(acts, "Binnen", PropertyType.createLocationProperty("binnen"));
-        linkActProp(acts, "Buiten", PropertyType.createLocationProperty("buiten"));
+        linkActProp(acts, "Binnen", PropertyType.createLocationProperty(Location.INSIDE));
+        linkActProp(acts, "Buiten", PropertyType.createLocationProperty(Location.OUTSIDE));
 
         linkActProp(acts, "Price 5-10", PropertyType.createPriceProperty(5, 10));
         linkActProp(acts, "Price 10-100", PropertyType.createPriceProperty(10, 100));
@@ -99,6 +98,7 @@ class DatabaseHandler extends SQLiteOpenHelper {
             case ENERGY:
             case LOCATION:
             case TAGS:
+            case RATING:
                 create.append(',').append(KEY_PROPERTY_VALUE).append(" TEXT");
                 break;
             case TIME:
@@ -106,9 +106,6 @@ class DatabaseHandler extends SQLiteOpenHelper {
             case PRICE:
                 create.append(',').append(KEY_PROPERTY_MIN).append(" INTEGER");
                 create.append(',').append(KEY_PROPERTY_MAX).append(" INTEGER");
-                break;
-            case RATING:
-                create.append(',').append(KEY_PROPERTY_RATING).append(" TEXT");
                 break;
             default:
                 throw new PropertyTypeUnknownException(type);
@@ -240,16 +237,14 @@ class DatabaseHandler extends SQLiteOpenHelper {
         switch (type) {
             case ENERGY:
             case LOCATION:
-                values.put(KEY_PROPERTY_VALUE, ((SingleValueProperty) property).getValue());
+            case RATING:
+                values.put(KEY_PROPERTY_VALUE, ((EnumProperty) property).getValue().name());
                 break;
             case TIME:
             case PEOPLE:
             case PRICE:
                 values.put(KEY_PROPERTY_MIN, ((MinMaxProperty) property).getMin());
                 values.put(KEY_PROPERTY_MAX, ((MinMaxProperty) property).getMax());
-                break;
-            case RATING:
-                values.put(KEY_PROPERTY_RATING, ((RatingProperty) property).getRating().name());
                 break;
             case TAGS:
                 for (String value : ((MultiValueProperty) property).getValues()) {
@@ -305,10 +300,10 @@ class DatabaseHandler extends SQLiteOpenHelper {
 //            long id = cursor.getLong(0);
             switch (type) {
                 case ENERGY:
-                    property = PropertyType.createEnergyProperty(cursor.getString(cursor.getColumnIndex(KEY_PROPERTY_VALUE)));
+                    property = PropertyType.createEnergyProperty(Energy.valueOf(cursor.getString(cursor.getColumnIndex(KEY_PROPERTY_VALUE))));
                     break;
                 case LOCATION:
-                    property = PropertyType.createLocationProperty(cursor.getString(cursor.getColumnIndex(KEY_PROPERTY_VALUE)));
+                    property = PropertyType.createLocationProperty(Location.valueOf(cursor.getString(cursor.getColumnIndex(KEY_PROPERTY_VALUE))));
                     break;
                 case TIME:
                     property = PropertyType.createTimeProperty(cursor.getInt(cursor.getColumnIndex(KEY_PROPERTY_MIN)), cursor.getInt(cursor.getColumnIndex(KEY_PROPERTY_MAX)));
@@ -320,7 +315,7 @@ class DatabaseHandler extends SQLiteOpenHelper {
                     property = PropertyType.createPriceProperty(cursor.getInt(cursor.getColumnIndex(KEY_PROPERTY_MIN)), cursor.getInt(cursor.getColumnIndex(KEY_PROPERTY_MAX)));
                     break;
                 case RATING:
-                    property = PropertyType.createRatingProperty(Rating.valueOf(cursor.getString(cursor.getColumnIndex(KEY_PROPERTY_RATING))));
+                    property = PropertyType.createRatingProperty(Rating.valueOf(cursor.getString(cursor.getColumnIndex(KEY_PROPERTY_VALUE))));
                     break;
                 case TAGS:
                     LinkedList<String> values = new LinkedList<String>();
@@ -439,14 +434,11 @@ class DatabaseHandler extends SQLiteOpenHelper {
         String[] selectionArgs = null;
         switch (filter.getType()) {
             case ENERGY:
-                String energy = filter.getValue();
-                selection.append(KEY_PROPERTY_VALUE).append(" = ?");
-                selectionArgs = new String[]{energy};
-                break;
             case LOCATION:
-                String location = filter.getValue();
+            case RATING:
+                String str = filter.getValue();
                 selection.append(KEY_PROPERTY_VALUE).append(" = ?");
-                selectionArgs = new String[]{location};
+                selectionArgs = new String[]{str};
                 break;
             case TIME:
                 int time = Integer.parseInt(filter.getValue());
@@ -461,10 +453,6 @@ class DatabaseHandler extends SQLiteOpenHelper {
                 selection.append(KEY_PROPERTY_MIN).append(" < ").append(price);
 //                // price > min
 //                selection.append(AND).append(price).append(" < ").append(KEY_PROPERTY_MAX);
-                break;
-            case RATING:
-                int rating = Integer.parseInt(filter.getValue());
-                selection.append(KEY_PROPERTY_RATING).append(" >= ").append(rating);
                 break;
             case TAGS:
                 // TODO: tags werken niet tegoei, zit het probleem hier?

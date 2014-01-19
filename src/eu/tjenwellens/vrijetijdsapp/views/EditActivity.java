@@ -11,14 +11,15 @@ import android.widget.Toast;
 import eu.tjenwellens.vrijetijdsapp.Activiteit;
 import eu.tjenwellens.vrijetijdsapp.ApplicationVrijetijdsApp;
 import eu.tjenwellens.vrijetijdsapp.R;
+import eu.tjenwellens.vrijetijdsapp.properties.Energy;
+import eu.tjenwellens.vrijetijdsapp.properties.EnumProperty;
+import eu.tjenwellens.vrijetijdsapp.properties.Location;
 import eu.tjenwellens.vrijetijdsapp.properties.MinMaxProperty;
 import eu.tjenwellens.vrijetijdsapp.properties.MultiValueProperty;
 import eu.tjenwellens.vrijetijdsapp.properties.Property;
 import eu.tjenwellens.vrijetijdsapp.properties.PropertyType;
 import eu.tjenwellens.vrijetijdsapp.properties.PropertyTypeUnknownException;
 import eu.tjenwellens.vrijetijdsapp.properties.Rating;
-import eu.tjenwellens.vrijetijdsapp.properties.RatingProperty;
-import eu.tjenwellens.vrijetijdsapp.properties.SingleValueProperty;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -98,19 +99,25 @@ public class EditActivity extends Activity {
             Property property = entry.getValue();
             switch (type) {
                 case ENERGY:
-                    String energy = ((SingleValueProperty) property).getValue();
-                    if ("rustig".equalsIgnoreCase(energy)) {
-                        rbtnEnergieRustig.setChecked(true);
-                    } else if ("actief".equalsIgnoreCase(energy)) {
-                        rbtnEnergieActief.setChecked(true);
+                    Energy energy = ((EnumProperty<Energy>) property).getValue();
+                    switch (energy) {
+                        case ACTIVE:
+                            rbtnEnergieActief.setChecked(true);
+                            break;
+                        case CALM:
+                            rbtnEnergieRustig.setChecked(true);
+                            break;
                     }
                     break;
                 case LOCATION:
-                    String location = ((SingleValueProperty) property).getValue();
-                    if ("binnen".equalsIgnoreCase(location)) {
-                        rbtnPlaatsBinnen.setChecked(true);
-                    } else if ("buiten".equalsIgnoreCase(location)) {
-                        rbtnPlaatsBuiten.setChecked(true);
+                    Location location = ((EnumProperty<Location>) property).getValue();
+                    switch (location) {
+                        case INSIDE:
+                            rbtnPlaatsBinnen.setChecked(true);
+                            break;
+                        case OUTSIDE:
+                            rbtnPlaatsBuiten.setChecked(true);
+                            break;
                     }
                     break;
                 case TIME:
@@ -132,7 +139,7 @@ public class EditActivity extends Activity {
                     txtPrijsMax.setText(String.valueOf(maxPrice));
                     break;
                 case RATING:
-                    Rating rating = ((RatingProperty) property).getRating();
+                    Rating rating = ((EnumProperty<Rating>) property).getValue();
                     switch (rating) {
                         case FUN:
                             rbtnRatingFun.setChecked(true);
@@ -194,33 +201,37 @@ public class EditActivity extends Activity {
         }
         // Plaats
         int checkedId = rgPlaats.getCheckedRadioButtonId();
-        if (checkedId != -1) {
-            String location = null;
-            if (checkedId == R.id.rbtnPlaatsBinnen) {
-                location = "binnen";
-            } else if (checkedId == R.id.rbtnPlaatsBuiten) {
-                location = "buiten";
-            } else {
-                Logger.getLogger(CreateActivity.class.toString()).log(Level.SEVERE, "Wrong radiobutton found in plaatsgroup: {0}", findViewById(checkedId));
-            }
-            if (location != null) {
-                newProperties.add(PropertyType.createLocationProperty(location));
-            }
+        Location location = null;
+        switch (checkedId) {
+            case R.id.rbtnPlaatsBinnen:
+                location = Location.INSIDE;
+                break;
+            case R.id.rbtnPlaatsBuiten:
+                location = Location.OUTSIDE;
+                break;
+            case -1:
+            default:
+                Logger.getLogger(FilterActivity.class.toString()).log(Level.SEVERE, "Wrong radiobutton found in plaatsgroup: {0}", findViewById(checkedId));
+        }
+        if (location != null) {
+            newProperties.add(PropertyType.createLocationProperty(location));
         }
         // Energie
         checkedId = rgEnergie.getCheckedRadioButtonId();
-        if (checkedId != -1) {
-            String energy = null;
-            if (checkedId == R.id.rbtnEnergieActief) {
-                energy = "actief";
-            } else if (checkedId == R.id.rbtnEnergieRustig) {
-                energy = "rustig";
-            } else {
-                Logger.getLogger(CreateActivity.class.toString()).log(Level.SEVERE, "Wrong radiobutton found in energiegroup: {0}", findViewById(checkedId));
-            }
-            if (energy != null) {
-                newProperties.add(PropertyType.createEnergyProperty(energy));
-            }
+        Energy energy = null;
+        switch (checkedId) {
+            case R.id.rbtnEnergieActief:
+                energy = Energy.ACTIVE;
+                break;
+            case R.id.rbtnEnergieRustig:
+                energy = Energy.CALM;
+                break;
+            case -1:
+            default:
+                Logger.getLogger(FilterActivity.class.toString()).log(Level.SEVERE, "Wrong radiobutton found in plaatsgroup: {0}", findViewById(checkedId));
+        }
+        if (energy != null) {
+            newProperties.add(PropertyType.createEnergyProperty(energy));
         }
         // Tags
         String tagText = txtTags.getText().toString().trim();

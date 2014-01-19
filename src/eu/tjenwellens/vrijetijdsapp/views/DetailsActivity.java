@@ -11,9 +11,9 @@ import android.widget.TextView;
 import eu.tjenwellens.vrijetijdsapp.Activiteit;
 import eu.tjenwellens.vrijetijdsapp.ApplicationVrijetijdsApp;
 import eu.tjenwellens.vrijetijdsapp.R;
+import eu.tjenwellens.vrijetijdsapp.properties.EnumProperty;
 import eu.tjenwellens.vrijetijdsapp.properties.Property;
 import eu.tjenwellens.vrijetijdsapp.properties.PropertyTypeUnknownException;
-import eu.tjenwellens.vrijetijdsapp.properties.RatingProperty;
 
 /**
  *
@@ -60,16 +60,16 @@ public class DetailsActivity extends Activity {
         for (Property p : a.getProperties().values()) {
             text = getString(p.getType().getResourceId()) + ": ";
             switch (p.getType()) {
-                case ENERGY:
-                case LOCATION:
                 case PEOPLE:
                 case PRICE:
                 case TAGS:
                 case TIME:
                     text += p.toString();
                     break;
+                case ENERGY:
+                case LOCATION:
                 case RATING:
-                    text += getString(((RatingProperty) p).getRating().getResourceId());
+                    text += getString(((EnumProperty) p).getValue().getResourceId());
                     break;
                 default:
                     throw new PropertyTypeUnknownException(p.getType());

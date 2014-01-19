@@ -21,12 +21,12 @@ public enum PropertyType {
         this.resourceId = resourceId;
     }
 
-    public static Property createEnergyProperty(String energy) {
-        return new SingleValueProperty(ENERGY, energy);
+    public static Property createEnergyProperty(Energy energy) {
+        return new EnumProperty<Energy>(ENERGY, energy);
     }
 
-    public static Property createLocationProperty(String location) {
-        return new SingleValueProperty(LOCATION, location);
+    public static Property createLocationProperty(Location location) {
+        return new EnumProperty<Location>(LOCATION, location);
     }
 
     public static Property createPeopleProperty(int min, int max) {
@@ -38,7 +38,7 @@ public enum PropertyType {
     }
 
     public static Property createRatingProperty(Rating rating) {
-        return new RatingProperty(RATING, rating);
+        return new EnumProperty<Rating>(RATING, rating);
     }
 
     public static Property createTagsProperty(Collection<String> tags) {

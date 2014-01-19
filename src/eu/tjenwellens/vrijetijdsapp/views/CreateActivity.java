@@ -10,6 +10,8 @@ import android.widget.Toast;
 import eu.tjenwellens.vrijetijdsapp.Activiteit;
 import eu.tjenwellens.vrijetijdsapp.ApplicationVrijetijdsApp;
 import eu.tjenwellens.vrijetijdsapp.R;
+import eu.tjenwellens.vrijetijdsapp.properties.Energy;
+import eu.tjenwellens.vrijetijdsapp.properties.Location;
 import eu.tjenwellens.vrijetijdsapp.properties.Property;
 import eu.tjenwellens.vrijetijdsapp.properties.PropertyType;
 import eu.tjenwellens.vrijetijdsapp.properties.Rating;
@@ -101,33 +103,37 @@ public class CreateActivity extends Activity {
         }
         // Plaats
         int checkedId = rgPlaats.getCheckedRadioButtonId();
-        if (checkedId != -1) {
-            String location = null;
-            if (checkedId == R.id.rbtnPlaatsBinnen) {
-                location = "binnen";
-            } else if (checkedId == R.id.rbtnPlaatsBuiten) {
-                location = "buiten";
-            } else {
-                Logger.getLogger(CreateActivity.class.toString()).log(Level.SEVERE, "Wrong radiobutton found in plaatsgroup: {0}", findViewById(checkedId));
-            }
-            if (location != null) {
-                properties.add(PropertyType.createLocationProperty(location));
-            }
+        Location location = null;
+        switch (checkedId) {
+            case R.id.rbtnPlaatsBinnen:
+                location = Location.INSIDE;
+                break;
+            case R.id.rbtnPlaatsBuiten:
+                location = Location.OUTSIDE;
+                break;
+            case -1:
+            default:
+                Logger.getLogger(FilterActivity.class.toString()).log(Level.SEVERE, "Wrong radiobutton found in plaatsgroup: {0}", findViewById(checkedId));
+        }
+        if (location != null) {
+            properties.add(PropertyType.createLocationProperty(location));
         }
         // Energie
         checkedId = rgEnergie.getCheckedRadioButtonId();
-        if (checkedId != -1) {
-            String energy = null;
-            if (checkedId == R.id.rbtnEnergieActief) {
-                energy = "actief";
-            } else if (checkedId == R.id.rbtnEnergieRustig) {
-                energy = "rustig";
-            } else {
-                Logger.getLogger(CreateActivity.class.toString()).log(Level.SEVERE, "Wrong radiobutton found in energiegroup: {0}", findViewById(checkedId));
-            }
-            if (energy != null) {
-                properties.add(PropertyType.createEnergyProperty(energy));
-            }
+        Energy energy = null;
+        switch (checkedId) {
+            case R.id.rbtnEnergieActief:
+                energy = Energy.ACTIVE;
+                break;
+            case R.id.rbtnEnergieRustig:
+                energy = Energy.CALM;
+                break;
+            case -1:
+            default:
+                Logger.getLogger(FilterActivity.class.toString()).log(Level.SEVERE, "Wrong radiobutton found in plaatsgroup: {0}", findViewById(checkedId));
+        }
+        if (energy != null) {
+            properties.add(PropertyType.createEnergyProperty(energy));
         }
         // Tags
         String tagText = txtTags.getText().toString().trim();
