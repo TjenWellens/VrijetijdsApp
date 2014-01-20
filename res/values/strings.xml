@@ -12,7 +12,7 @@
     
     <!-- ImageButtons -->
     <string name="btnCancel">Annuleer</string>
-    <string name="btnCreate">Maak</string>
+    <string name="btnAccept">OK</string>
     <string name="btnDelete">Verwijder</string>
     <string name="btnSave">Opslaan</string>
     <string name="btnSearch">Zoek</string>

@@ -241,10 +241,10 @@
             style="@style/ImageButton.btnCancel" />
 
         <ImageButton
-            android:id="@+id/btnCreate"
-            android:onClick="btnCreate"
-            android:contentDescription="@string/btnCancel"
-            style="@style/ImageButton.btnCancel" />
+            android:id="@+id/btnAccept"
+            android:onClick="btnAccept"
+            android:contentDescription="@string/btnAccept"
+            style="@style/ImageButton.btnAccept" />
     </LinearLayout>
 
 </LinearLayout>

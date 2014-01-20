@@ -34,7 +34,7 @@ public class CreateActivity extends Activity {
         finish();
     }
 
-    public void btnCreate(View button) {
+    public void btnAccept(View button) {
         created = ActivityUtils.createActiviteit(this);
         if (created == null) {
             return;

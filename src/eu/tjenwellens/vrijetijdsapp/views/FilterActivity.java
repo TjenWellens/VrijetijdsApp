@@ -35,7 +35,7 @@ public class FilterActivity extends Activity {
         finish();
     }
 
-    public void btnSearch(View button) {
+    public void btnAccept(View button) {
         application.getData().selectWithFilters(ActivityUtils.createFilters(this));
         Intent returnIntent = new Intent();
         setResult(RESULT_OK, returnIntent);
