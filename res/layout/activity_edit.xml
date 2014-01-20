@@ -234,28 +234,34 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
-        <Button
+        <ImageButton
             android:id="@+id/btnCancel"
+            android:src="@drawable/ic_action_cancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="btnCancel"
+            android:contentDescription="@string/edit_btn_cancel"
             android:text="@string/edit_btn_cancel" />
 
-        <Button
+        <ImageButton
             android:id="@+id/btnDelete"
+            android:src="@drawable/ic_action_discard"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="btnDelete"
+            android:contentDescription="@string/edit_btn_delete"
             android:text="@string/edit_btn_delete" />
 
-        <Button
+        <ImageButton
             android:id="@+id/btnSave"
+            android:src="@drawable/ic_action_save"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="btnSave"
+            android:contentDescription="@string/edit_btn_save"
             android:text="@string/edit_btn_save" />
     </LinearLayout>
 

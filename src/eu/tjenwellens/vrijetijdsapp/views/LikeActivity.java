@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -34,7 +33,7 @@ public class LikeActivity extends Activity {
     private ViewGroup likeContainer;
     private RadioGroup rgRating;
     private ProgressBar progress;
-    private Button btnPrevious, btnNext;
+    private View btnPrevious, btnNext;
 
     /**
      * Called when the activity is first created.
@@ -72,8 +71,8 @@ public class LikeActivity extends Activity {
         likeContainer = (ViewGroup) findViewById(R.id.likeContainer);
         rgRating = (RadioGroup) findViewById(R.id.rgRating);
         progress = (ProgressBar) findViewById(R.id.progress);
-        btnPrevious = (Button) findViewById(R.id.btnPrevious);
-        btnNext = (Button) findViewById(R.id.btnNext);
+        btnPrevious = (View) findViewById(R.id.btnPrevious);
+        btnNext = (View) findViewById(R.id.btnNext);
     }
 
     private TextView createView(String text) {

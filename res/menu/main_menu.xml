@@ -3,26 +3,32 @@
 
     <item
         android:id="@+id/menu_settings"
+        android:icon="@drawable/ic_action_settings"
         android:orderInCategory="100"
         android:title="@string/menu_settings"/>
     <item
         android:id="@+id/menu_create"
+        android:icon="@drawable/ic_action_new"
         android:orderInCategory="100"
         android:title="@string/menu_create"/>
     <item
         android:id="@+id/menu_search"
+        android:icon="@drawable/ic_action_search"
         android:orderInCategory="100"
         android:title="@string/menu_search"/>
     <item
         android:id="@+id/menu_show_all"
+        android:icon="@drawable/ic_action_refresh"
         android:orderInCategory="100"
         android:title="@string/menu_show_all"/>
     <item
         android:id="@+id/menu_random"
+        android:icon="@drawable/ic_action_shuffle"
         android:orderInCategory="100"
         android:title="@string/menu_random"/>
     <item
         android:id="@+id/menu_like"
+        android:icon="@drawable/ic_action_favorite"
         android:orderInCategory="100"
         android:title="@string/menu_like"/>
 </menu>

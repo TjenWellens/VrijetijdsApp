@@ -234,20 +234,24 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
-        <Button
+        <ImageButton
             android:id="@+id/btnCancel"
+            android:src="@drawable/ic_action_cancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="btnCancel"
+            android:contentDescription="@string/create_btn_cancel"
             android:text="@string/create_btn_cancel" />
 
-        <Button
+        <ImageButton
             android:id="@+id/btnCreate"
+            android:src="@drawable/ic_action_accept"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="btnCreate"
+            android:contentDescription="@string/create_btn_create"
             android:text="@string/create_btn_create" />
     </LinearLayout>
 
