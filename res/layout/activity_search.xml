@@ -168,23 +168,15 @@
 
         <ImageButton
             android:id="@+id/btnCancel"
-            android:src="@drawable/ic_action_cancel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:onClick="btnCancel"
-            android:contentDescription="@string/search_btn_cancel"
-            android:text="@string/search_btn_cancel" />
+            android:contentDescription="@string/btnCancel"
+            style="@style/ImageButton.btnCancel" />
 
         <ImageButton
             android:id="@+id/btnSearch"
-            android:src="@drawable/ic_action_search"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:onClick="btnSearch"
-            android:contentDescription="@string/search_btn_search"
-            android:text="@string/search_btn_search" />
+            android:contentDescription="@string/btnSearch"
+            style="@style/ImageButton.btnSearch" />
     </LinearLayout>
 
 </LinearLayout>

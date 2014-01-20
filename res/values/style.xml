@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    
+    <style name="CustomAppStyle">
+    </style>
+    
+    <style name="ImageButton" parent="@android:style/Widget.ImageButton">        
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+    
+    <style name="ImageButton.btnCreate">
+        <item name="android:src">@drawable/ic_action_accept</item>
+    </style>
+    
+    <style name="ImageButton.btnCancel">        
+        <item name="android:src">@drawable/ic_action_cancel</item>
+    </style>
+    
+    <style name="ImageButton.btnDelete">        
+        <item name="android:src">@drawable/ic_action_discard</item>
+    </style>
+    
+    <style name="ImageButton.btnNext">        
+        <item name="android:src">@drawable/ic_action_next_item</item>
+    </style>
+    
+    <style name="ImageButton.btnPrevious">        
+        <item name="android:src">@drawable/ic_action_previous_item</item>
+    </style>
+    
+    <style name="ImageButton.btnSave">        
+        <item name="android:src">@drawable/ic_action_save</item>
+    </style>
+    
+    <style name="ImageButton.btnSearch">        
+        <item name="android:src">@drawable/ic_action_search</item>
+    </style>
+    
+    
+    
+    
+    
+<!--    <style name="Widget">
+        <item name="android:textAppearance">?textAppearance</item>
+    </style>
+    
+    <style name="Widget.ImageButton">
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:scaleType">center</item>
+        <item name="android:background">@android:drawable/btn_default</item>
+    </style>
+    
+    <style name="Widget.Holo.ImageButton" parent="Widget.ImageButton">
+        <item name="android:background">@android:drawable/btn_default_holo_dark</item>
+    </style>-->
+    
+    <!--<item name="imageButtonStyle">@android:style/Widget.ImageButton</item>-->
+</resources>

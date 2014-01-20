@@ -6,6 +6,7 @@
     <application android:label="@string/app_name" 
                  android:name="eu.tjenwellens.vrijetijdsapp.ApplicationVrijetijdsApp"
                  android:icon="@drawable/ic_launcher" 
+                 android:theme="@style/CustomAppStyle"
                  android:allowBackup="true" >
         <activity android:name="eu.tjenwellens.vrijetijdsapp.views.MainActivity"
                   android:label="@string/app_name">

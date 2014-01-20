@@ -61,23 +61,15 @@
 
         <ImageButton
             android:id="@+id/btnPrevious"
-            android:src="@drawable/ic_action_previous_item"
             android:onClick="btnPrevious"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:contentDescription="@string/like_btn_previous"
-            android:text="@string/like_btn_previous" />
+            android:contentDescription="@string/btnPrevious"
+            style="@style/ImageButton.btnPrevious" />
 
         <ImageButton
             android:id="@+id/btnNext"
-            android:src="@drawable/ic_action_next_item"
             android:onClick="btnNext"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:contentDescription="@string/like_btn_next"
-            android:text="@string/like_btn_next" />
+            android:contentDescription="@string/btnNext"
+            style="@style/ImageButton.btnNext" />
     </LinearLayout>
 
 </LinearLayout>

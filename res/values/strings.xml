@@ -10,6 +10,15 @@
     <string name="description">Beschrijving</string>
     <string name="manual">Handleiding</string>
     
+    <!-- ImageButtons -->
+    <string name="btnCancel">Annuleer</string>
+    <string name="btnCreate">Maak</string>
+    <string name="btnDelete">Verwijder</string>
+    <string name="btnSave">Opslaan</string>
+    <string name="btnSearch">Zoek</string>
+    <string name="btnPrevious">Previous</string>
+    <string name="btnNext">Next</string>
+    
     <!-- Property names -->
     <string name="prop_people">Personen</string>
     <string name="prop_location">Plaats</string>

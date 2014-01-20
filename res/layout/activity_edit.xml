@@ -236,33 +236,21 @@
 
         <ImageButton
             android:id="@+id/btnCancel"
-            android:src="@drawable/ic_action_cancel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:onClick="btnCancel"
-            android:contentDescription="@string/edit_btn_cancel"
-            android:text="@string/edit_btn_cancel" />
+            android:contentDescription="@string/btnCancel"
+            style="@style/ImageButton.btnCancel" />
 
         <ImageButton
             android:id="@+id/btnDelete"
-            android:src="@drawable/ic_action_discard"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:onClick="btnDelete"
-            android:contentDescription="@string/edit_btn_delete"
-            android:text="@string/edit_btn_delete" />
+            android:contentDescription="@string/btnDelete"
+            style="@style/ImageButton.btnDelete" />
 
         <ImageButton
             android:id="@+id/btnSave"
-            android:src="@drawable/ic_action_save"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:onClick="btnSave"
-            android:contentDescription="@string/edit_btn_save"
-            android:text="@string/edit_btn_save" />
+            android:contentDescription="@string/btnSave"
+            style="@style/ImageButton.btnSave" />
     </LinearLayout>
 
 </LinearLayout>
