@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <style name="ImageButton" parent="@android:style/Widget.ImageButton">        
+    <style name="ImageButton" parent="@android:style/Widget.Holo.ImageButton">        
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
     </style>
     
     <style name="ImageButton.btnAccept">        
-        <item name="android:src">@drawable/ic_light_action_accept</item>
+        <item name="android:src">@drawable/ic_action_accept</item>
     </style>
     
     <style name="ImageButton.btnCancel">        
-        <item name="android:src">@drawable/ic_light_action_cancel</item>
+        <item name="android:src">@drawable/ic_action_cancel</item>
     </style>
     
     <style name="ImageButton.btnDelete">        
-        <item name="android:src">@drawable/ic_light_action_discard</item>
+        <item name="android:src">@drawable/ic_action_discard</item>
     </style>
     
     <style name="ImageButton.btnNext">        
-        <item name="android:src">@drawable/ic_light_action_next_item</item>
+        <item name="android:src">@drawable/ic_action_next_item</item>
     </style>
     
     <style name="ImageButton.btnPrevious">        
-        <item name="android:src">@drawable/ic_light_action_previous_item</item>
+        <item name="android:src">@drawable/ic_action_previous_item</item>
     </style>
     
     <style name="ImageButton.btnSave">        
-        <item name="android:src">@drawable/ic_light_action_save</item>
+        <item name="android:src">@drawable/ic_action_save</item>
     </style>
 </resources>
