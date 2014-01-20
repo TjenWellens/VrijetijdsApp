@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 class DatabaseHandler extends SQLiteOpenHelper {
     private boolean newDatabase = false;
     // Database Version
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 1;
     // Database Name
     private static final String DATABASE_NAME = "vrijetijdsapp";
     private static final String TABLE_ACTIVITEITEN = "activiteiten";
