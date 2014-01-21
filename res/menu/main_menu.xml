@@ -31,4 +31,12 @@
         android:icon="@drawable/ic_action_favorite"
         android:orderInCategory="100"
         android:title="@string/menu_like"/>
+    <item
+        android:id="@+id/menu_save"
+        android:orderInCategory="100"
+        android:title="@string/menu_save"/>
+    <item
+        android:id="@+id/menu_load"
+        android:orderInCategory="100"
+        android:title="@string/menu_load"/>
 </menu>

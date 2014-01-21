@@ -9,7 +9,7 @@ import java.util.Set;
  * @author Tjen
  */
 public class MultiValueProperty extends GeneralProperty {
-    private static final String DEFAULT_SPLITTER = "|";
+    private static final String DEFAULT_SPLITTER = ",";
     private Set<String> values;
 
     MultiValueProperty(PropertyType type, Collection<String> values) {
@@ -38,5 +38,14 @@ public class MultiValueProperty extends GeneralProperty {
             s.append(value);
         }
         return s.toString();
+    }
+
+    static Set<String> parseMultiSet(String value) {
+        Set<String> set = new HashSet<String>();
+        String[] tags = value.split(MultiValueProperty.DEFAULT_SPLITTER);
+        for (int i = 0; i < tags.length; i++) {
+            set.add(tags[i].trim());
+        }
+        return set;
     }
 }
