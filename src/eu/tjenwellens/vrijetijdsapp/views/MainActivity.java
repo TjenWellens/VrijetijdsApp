@@ -9,9 +9,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import eu.tjenwellens.vrijetijdsapp.Activiteit;
 import eu.tjenwellens.vrijetijdsapp.ApplicationVrijetijdsApp;
 import eu.tjenwellens.vrijetijdsapp.R;
+import eu.tjenwellens.vrijetijdsapp.storage.io.FileIO;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -138,8 +141,24 @@ public class MainActivity extends Activity {
                 ActivityUtils.startLikeActivity(this);
                 loadAllActiviteiten();
                 return true;
+            case R.id.menu_save:
+                doSave();
+                return true;
+            case R.id.menu_load:
+                doLoad();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void doSave() {
+        FileIO.writeToFile(this, "activiteiten.txt", application.getData().getSelection());
+    }
+
+    private void doLoad() {
+        this.activiteiten = new TreeSet<Activiteit>(FileIO.readFromFile(this, "activiteiten.txt"));
+        Toast.makeText(this, "" + activiteiten.size() + " activiteiten geladen", Toast.LENGTH_SHORT);
+        updateGUI();
     }
 }

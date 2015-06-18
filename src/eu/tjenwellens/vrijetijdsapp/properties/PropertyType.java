@@ -1,5 +1,6 @@
 package eu.tjenwellens.vrijetijdsapp.properties;
 
+import android.graphics.Point;
 import eu.tjenwellens.vrijetijdsapp.R;
 import java.util.Collection;
 
@@ -33,6 +34,21 @@ public enum PropertyType {
         return new MinMaxProperty(PEOPLE, min, max);
     }
 
+    public static Property createPeopleProperty(String value) throws NumberFormatException {
+        Point minmax = MinMaxProperty.getMinMax(value);
+        return minmax == null ? null : new MinMaxProperty(PEOPLE, minmax.x, minmax.y);
+    }
+
+    public static Property createPriceProperty(String value) throws NumberFormatException {
+        Point minmax = MinMaxProperty.getMinMax(value);
+        return minmax == null ? null : new MinMaxProperty(PRICE, minmax.x, minmax.y);
+    }
+
+    public static Property createTimeProperty(String value) throws NumberFormatException {
+        Point minmax = MinMaxProperty.getMinMax(value);
+        return minmax == null ? null : new MinMaxProperty(TIME, minmax.x, minmax.y);
+    }
+
     public static Property createPriceProperty(int min, int max) {
         return new MinMaxProperty(PRICE, min, max);
     }
@@ -43,6 +59,11 @@ public enum PropertyType {
 
     public static Property createTagsProperty(Collection<String> tags) {
         return new MultiValueProperty(TAGS, tags);
+    }
+
+    public static Property createTagsProperty(String value) {
+        Collection<String> tags = MultiValueProperty.parseMultiSet(value);
+        return tags == null || tags.isEmpty() ? null : new MultiValueProperty(TAGS, tags);
     }
 
     public static Property createTimeProperty(int min, int max) {

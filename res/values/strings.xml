@@ -137,6 +137,13 @@
     <string name="like_btn_next">Next</string>
     <!-- toast messages -->
     <string name="toast_like_empty_selection">Er konden geen activiteiten zonder beoordeling gevonden worden.</string>
+    
+    <!-- toast messages -->
+    <string name="file_not_found">Het bestand kon niet worden gevonden: </string>
+    <string name="file_saved">De gekozen selectie is opgeslagen.</string>
+    <string name="external_storage_not_writeable">De externe opslag is niet leesbaar.</string>
+    <string name="external_storage_not_readable">De externe opslag is niet schrijfbaar.</string>
+    <string name="file_write_error">Het schrijven naar dit bestand is mislukt: </string>
 
     <!-- menu -->
     <string name="menu_settings">Instellingen</string>
@@ -146,6 +153,8 @@
     <string name="menu_edit">Aanpassen</string>
     <string name="menu_random">Random</string>
     <string name="menu_like">Beoordeel</string>
+    <string name="menu_save">Opslaan</string>
+    <string name="menu_load">Laden</string>
     
 	
 </resources>
